@@ -63,6 +63,7 @@ public interface ClientUserMapper {
     @Update("UPDATE client_user SET username=#{username},mobile=#{mobile} WHERE userid=#{userid}")
     int updateClientUser(@Param("userid")Integer userId,@Param("username")String username,@Param("mobile")String mobile);
 
+
     /***
      * 更新用户状态信息
      * @param userId 用户id
@@ -89,6 +90,5 @@ public interface ClientUserMapper {
      */
     @Delete("DELETE FROM client_user WHERE mobile=#{mobile}")
     int delClientUserByMoblie(@Param("mobile")String mobile);
-
 
 }
