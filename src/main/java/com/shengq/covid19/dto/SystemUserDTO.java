@@ -15,4 +15,8 @@ public class SystemUserDTO implements Serializable {
     private String mobile;
     private int status;
     private int permission;
+
+    public SystemUserDTO() {
+
+    }
 }

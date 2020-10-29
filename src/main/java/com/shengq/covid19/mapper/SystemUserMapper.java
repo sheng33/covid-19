@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
-public interface SYstemUserMapper {
+public interface SystemUserMapper {
 
     /***
      * 根据用户id查询用户信息
