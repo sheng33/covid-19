@@ -1,17 +1,21 @@
 package com.shengq.covid19.service.Impl;
 
 import com.shengq.covid19.dao.SystemUser;
+import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.mapper.SystemUserMapper;
 import com.shengq.covid19.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SystemUserServiceImpl implements SystemUserService {
+public class SystemUserServiceImpl implements SystemUserService, UserDetailsService {
     @Autowired
     SystemUserMapper userMapper;
     /***
@@ -84,5 +88,17 @@ public class SystemUserServiceImpl implements SystemUserService {
     public int updateUserPermission(Integer userid) {
         //TODO:2020.10.29 权限分配逻辑还未完成
         return userMapper.updateSystemUserPermission(userid,0);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        SystemUserLoginDetail userLoginDetail = new SystemUserLoginDetail();
+        System.out.println(name);
+        SystemUser systemUser = userMapper.findByName(name);
+        if (systemUser == null) throw new UsernameNotFoundException("管理员账户不存在");
+        userLoginDetail.setUsername(systemUser.getUsername());
+        userLoginDetail.setPassword(systemUser.getPassword());
+        userLoginDetail.setAccountNonExpired(systemUser.getStatus()==0);
+        return userLoginDetail;
     }
 }
