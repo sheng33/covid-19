@@ -1,6 +1,7 @@
 package com.shengq.covid19.service;
 
 import com.shengq.covid19.dto.SystemUserDTO;
+import com.shengq.covid19.vo.SystemUserVo;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface SystemUserService {
      */
     SystemUserDTO getUserInfo(String mobile);
 
+    SystemUserDTO getUserInfoByName(String name);
+
     /***
      * 得到所有系统用户信息列表
      * @return list集合
@@ -33,6 +36,8 @@ public interface SystemUserService {
      * @return 状态码
      */
     int updateSystemUserInfo(Integer userid,String username,String password);
+
+    int registerSystemUSer(SystemUserVo systemUserVo);
 
     /***
      * 删除系统用户

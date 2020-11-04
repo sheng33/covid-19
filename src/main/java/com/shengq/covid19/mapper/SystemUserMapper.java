@@ -4,6 +4,8 @@ import com.shengq.covid19.dao.ClientUser;
 import com.shengq.covid19.dao.SystemUser;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Mapper
@@ -39,14 +41,15 @@ public interface SystemUserMapper {
      * @param name 用户登录名
      * @param password 密码
      * @param mobile 手机号
+     * @param updateTime
      * @param permission 权限
      * @return 状态码
      */
     @Insert("INSERT INTO sys_user(id,username,password,mobile,update_time,status,permission)" +
-            "VALUES(#{id},#{username},#{password},#{mobile},null,0,#{permission})")
-    int addSystemUser(@Param("id") Integer userid,@Param("username") String name,
+            "VALUES(#{id},#{username},#{password},#{mobile},#{update_time},0,#{permission})")
+    int addSystemUser(@Param("id") Integer userid, @Param("username") String name,
                       @Param("password") String password, @Param("mobile") String mobile,
-                      @Param("permission") int permission);
+                      @Param("update_time") String updateTime, @Param("permission") int permission);
 
     /***
      * 列出全部管理员账户

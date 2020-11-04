@@ -1,6 +1,7 @@
 package com.shengq.covid19.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.utils.MyPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,6 +22,9 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author shengQ
+ */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -29,10 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     ObjectMapper objectMapper;
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http
                 .authenticationProvider(authenticationProvider())
                 .httpBasic()
@@ -62,7 +65,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     PrintWriter out = response.getWriter();
                     Map<String,Object> map = new HashMap<>();
-                    System.out.println(ex.toString());
                     map.put("code",401);
                     if (ex instanceof UsernameNotFoundException || ex instanceof BadCredentialsException) {
                         map.put("message","用户名或密码错误");
@@ -81,7 +83,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     map.put("code",200);
                     map.put("message","登录成功");
                     map.put("data",authentication);
-                    System.out.println(authentication.toString());
                     response.setContentType("application/json;charset=utf-8");
                     PrintWriter out = response.getWriter();
                     out.write(objectMapper.writeValueAsString(map));

@@ -5,19 +5,29 @@ import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.mapper.SystemUserMapper;
 import com.shengq.covid19.service.SystemUserService;
+import com.shengq.covid19.utils.MyPasswordEncoder;
+import com.shengq.covid19.vo.SystemUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
-public class SystemUserServiceImpl implements SystemUserService, UserDetailsService {
+public class SystemUserServiceImpl implements SystemUserService{
     @Autowired
     SystemUserMapper userMapper;
+    @Autowired
+    MyPasswordEncoder myPasswordEncoder;
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
     /***
      * 获取用户信息（用户id）
      * @param userid 用户id
@@ -39,6 +49,14 @@ public class SystemUserServiceImpl implements SystemUserService, UserDetailsServ
     @Override
     public SystemUserDTO getUserInfo(String mobile) {
         SystemUser systemUser = userMapper.findByMobile(mobile);
+        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
+                systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
+        return systemUserDTO;
+    }
+
+    @Override
+    public SystemUserDTO getUserInfoByName(String name) {
+        SystemUser systemUser = userMapper.findByName(name);
         SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
         return systemUserDTO;
@@ -69,6 +87,15 @@ public class SystemUserServiceImpl implements SystemUserService, UserDetailsServ
         return userMapper.updateSystemUserInfo(userid,username,password);
     }
 
+    @Override
+    public int registerSystemUSer(SystemUserVo systemUserVo) {
+
+        Calendar calendar= Calendar.getInstance();
+        String password = myPasswordEncoder.encode(systemUserVo.getPassword());
+        return userMapper.addSystemUser(4,systemUserVo.getName(),password,systemUserVo.getMobile(),
+                dateFormat.format(calendar.getTime()),Integer.parseInt(systemUserVo.getAuthority()));
+    }
+
     /***
      * 删除系统用户
      * @param userid 用户id
@@ -90,15 +117,5 @@ public class SystemUserServiceImpl implements SystemUserService, UserDetailsServ
         return userMapper.updateSystemUserPermission(userid,0);
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        SystemUserLoginDetail userLoginDetail = new SystemUserLoginDetail();
-        System.out.println(name);
-        SystemUser systemUser = userMapper.findByName(name);
-        if (systemUser == null) throw new UsernameNotFoundException("管理员账户不存在");
-        userLoginDetail.setUsername(systemUser.getUsername());
-        userLoginDetail.setPassword(systemUser.getPassword());
-        userLoginDetail.setAccountNonExpired(systemUser.getStatus()==0);
-        return userLoginDetail;
-    }
+
 }

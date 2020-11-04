@@ -19,7 +19,8 @@ public class SystemUserController {
 
     @PostMapping(value = "/register")
     public Result register(@RequestBody SystemUserVo systemUserVo){
-        System.out.println(systemUserVo);
+        int count = systemUserService.registerSystemUSer(systemUserVo);
+        System.out.println("返回值"+count);
         return ResultUtil.success();
     }
 }
