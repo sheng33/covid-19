@@ -1,11 +1,8 @@
 package com.shengq.covid19.mapper;
 
-import com.shengq.covid19.dao.ClientUser;
 import com.shengq.covid19.dao.SystemUser;
 import org.apache.ibatis.annotations.*;
 
-import java.sql.Date;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Mapper

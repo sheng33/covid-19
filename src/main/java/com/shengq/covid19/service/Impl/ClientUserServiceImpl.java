@@ -7,9 +7,7 @@ import com.shengq.covid19.service.ClientUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.jnlp.ClipboardService;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 @Service
 public class ClientUserServiceImpl implements ClientUserService {

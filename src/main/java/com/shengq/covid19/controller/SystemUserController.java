@@ -1,7 +1,6 @@
 package com.shengq.covid19.controller;
 
 import com.shengq.covid19.config.Result;
-import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.service.Impl.SecurityUserDetailsServiceImpl;
 import com.shengq.covid19.service.SystemUserService;
 import com.shengq.covid19.utils.ResultUtil;
@@ -27,7 +26,6 @@ public class SystemUserController {
     @PostMapping(value = "/register")
     public Result register(@RequestBody SystemUserVo systemUserVo){
         int count = systemUserService.registerSystemUser(systemUserVo);
-        System.out.println("返回值"+count);
         if (count == -1){
             return ResultUtil.error(201,"用户已存在");
         }

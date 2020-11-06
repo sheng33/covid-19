@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ClientUserDTO implements Serializable {
     private static final long serialVersionUID = -2565028992218051744L;
     private Integer userid;

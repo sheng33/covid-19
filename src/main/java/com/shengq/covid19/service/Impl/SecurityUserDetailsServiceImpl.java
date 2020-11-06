@@ -1,7 +1,5 @@
 package com.shengq.covid19.service.Impl;
 
-import com.shengq.covid19.dao.SystemUser;
-import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.service.SystemUserService;
 import org.springframework.beans.factory.annotation.Autowired;

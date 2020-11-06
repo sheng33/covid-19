@@ -2,11 +2,13 @@ package com.shengq.covid19.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SystemUserDTO implements Serializable {
     private static final long serialVersionUID = 2032468700387603006L;
     private Integer userid;
@@ -16,7 +18,4 @@ public class SystemUserDTO implements Serializable {
     private int status;
     private int permission;
 
-    public SystemUserDTO() {
-
-    }
 }

@@ -3,7 +3,6 @@ package com.shengq.covid19.service;
 import com.shengq.covid19.dao.ClientUser;
 import com.shengq.covid19.dto.ClientUserDTO;
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 public interface ClientUserService {

@@ -1,23 +1,16 @@
 package com.shengq.covid19.service.Impl;
 
 import com.shengq.covid19.dao.SystemUser;
-import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.mapper.SystemUserMapper;
 import com.shengq.covid19.service.SystemUserService;
 import com.shengq.covid19.utils.MyPasswordEncoder;
 import com.shengq.covid19.vo.SystemUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 @Service

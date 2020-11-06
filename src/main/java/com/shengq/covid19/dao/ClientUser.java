@@ -9,6 +9,7 @@ import java.sql.Date;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ClientUser implements Serializable {
     private static final long serialVersionUID = 4250591492098617176L;
     private Integer userid;
