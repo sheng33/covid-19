@@ -2,27 +2,30 @@ package com.shengq.covid19.utils;
 
 import com.shengq.covid19.config.Result;
 
+/**
+ * @author shengQ
+ */
 public class ResultUtil {
-    public static Result success(Object object) {
-        Result result = new Result();
+    public static Result<Object> success(Object object) {
+        Result<Object> result = new Result<>();
         result.setCode(200);
         result.setMsg("请求成功");
         result.setData(object);
         return result;
     }
-    public static Result successMsg(String msg) {
-        Result result = new Result();
+    public static Result<String> successMsg(String msg) {
+        Result<String> result = new Result<String>();
         result.setCode(200);
         result.setMsg(msg);
         result.setData(null);
         return result;
     }
-    public static Result success() {
+    public static Result<Object> success() {
         return success(null);
     }
 
-    public static Result error(Integer code, String msg) {
-        Result result = new Result();
+    public static Result<String> error(Integer code, String msg) {
+        Result<String> result = new Result<String>();
         result.setCode(code);
         result.setMsg(msg);
         return result;

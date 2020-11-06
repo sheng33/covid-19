@@ -5,12 +5,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+/**
+ * @author shengQ
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class SystemUserVo implements Serializable {
+    private static final long serialVersionUID = 5924312159154672690L;
     private String name;
-    private String password;
+    private String username;
     private String mobile;
-    private String Authority;
+    private int status;
+    private String authority;
 }

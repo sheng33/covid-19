@@ -29,8 +29,12 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public SystemUserDTO getUserInfo(Integer userid) {
         SystemUser systemUser = userMapper.findById(userid);
-        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
-                systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
+        if (systemUser == null){
+            return null;
+        }
+        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),
+                systemUser.getUsername(),systemUser.getPassword(),systemUser.getMobile(),
+                systemUser.getStatus(),systemUser.getPermission());
         return systemUserDTO;
     }
 
@@ -42,14 +46,17 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public SystemUserDTO getUserInfo(String mobile) {
         SystemUser systemUser = userMapper.findByMobile(mobile);
-        return new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
+        if (systemUser == null){
+            return null;
+        }
+        return new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
     }
 
     @Override
     public SystemUserDTO getUserInfoByName(String name) {
         SystemUser systemUser = userMapper.findByName(name);
-        return new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
+        return new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
     }
 
@@ -61,8 +68,9 @@ public class SystemUserServiceImpl implements SystemUserService{
     public List<SystemUserDTO> getAllUser() {
         List<SystemUser> userList = userMapper.findAllSystemUser();
         List<SystemUserDTO> systemUserDtos = new ArrayList<>();
-        userList.forEach(systemUser -> systemUserDtos.add(new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
-                systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission())));
+        userList.forEach(systemUser -> systemUserDtos.add(new SystemUserDTO(systemUser.getUserid(),
+                systemUser.getName(),systemUser.getUsername(),systemUser.getPassword(),
+                systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission())));
         return systemUserDtos;
     }
 
@@ -74,28 +82,28 @@ public class SystemUserServiceImpl implements SystemUserService{
      * @return 状态码
      */
     @Override
-    public int updateSystemUserInfo(Integer userid, String username, String password) {
+    public int updateSystemUserInfo(Integer userid,String name, String username, String password) {
         Calendar calendar= Calendar.getInstance();
-        return userMapper.updateSystemUserInfo(userid,username,password,dateFormat.format(calendar.getTime()));
+        return userMapper.updateSystemUserInfo(userid,name,username,password,dateFormat.format(calendar.getTime()));
     }
 
     /***
      * 注册系统用户
-     * @param systemUserVo
+     * @param systemUserDTO
      * @return
      */
     @Override
-    public int registerSystemUser(SystemUserVo systemUserVo) {
+    public int registerSystemUser(SystemUserDTO systemUserDTO) {
         Calendar calendar= Calendar.getInstance();
-        SystemUser systemUser = userMapper.findByName(systemUserVo.getName());
+        SystemUser systemUser = userMapper.findByName(systemUserDTO.getUsername());
         if (systemUser != null){
             return -1;
         }
 
-        String password = myPasswordEncoder.encode(systemUserVo.getPassword());
-        return userMapper.addSystemUser(0,systemUserVo.getName(),password,systemUserVo.getMobile(),
-                Integer.parseInt(systemUserVo.getAuthority())
-                ,dateFormat.format(calendar.getTime()),dateFormat.format(calendar.getTime()));
+        String password = myPasswordEncoder.encode(systemUserDTO.getPassword());
+        return userMapper.addSystemUser(0,systemUserDTO.getName(),systemUserDTO.getUsername(),
+                password,systemUserDTO.getMobile(),systemUserDTO.getPermission(),
+                dateFormat.format(calendar.getTime()),dateFormat.format(calendar.getTime()));
     }
 
     /***

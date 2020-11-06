@@ -43,8 +43,8 @@ public interface SystemUserMapper {
      * @return 状态码
      */
     @Insert("INSERT INTO sys_user(id,username,password,mobile,status,permission,update_time,create_time)" +
-            "VALUES(#{id},#{username},#{password},#{mobile},0,#{permission},#{update_time},#{create_time})")
-    int addSystemUser(@Param("id") Integer userid, @Param("username") String name,
+            "VALUES(#{id},#{name},#{username},#{password},#{mobile},0,#{permission},#{update_time},#{create_time})")
+    int addSystemUser(@Param("id") Integer userid,@Param("name") String name,@Param("username") String username,
                       @Param("password") String password, @Param("mobile") String mobile,
                       @Param("permission") int permission,@Param("update_time") String updateTime,
                       @Param("create_time") String createTime);
@@ -63,9 +63,10 @@ public interface SystemUserMapper {
      * @param password 密码
      * @return 状态码
      */
-    @Update("UPDATE sys_user SET username = #{username},password = #{password},update_time=${update_time}" +
+    @Update("UPDATE sys_user SET nmae=#{nmae},username = #{username},password = #{password},update_time=${update_time}" +
             " WHERE id = #{id}")
-    int updateSystemUserInfo(@Param("id")Integer userid,@Param("username") String username,
+    int updateSystemUserInfo(@Param("id")Integer userid,@Param("name") String name,
+                             @Param("username") String username,
                              @Param("password") String password,@Param("update_time") String updateTime);
 
     /***

@@ -20,7 +20,12 @@ public interface SystemUserService {
      */
     SystemUserDTO getUserInfo(String mobile);
 
-    SystemUserDTO getUserInfoByName(String name);
+    /***
+     * 获取用户信息（登录用户名)
+     * @param username
+     * @return
+     */
+    SystemUserDTO getUserInfoByName(String username);
 
     /***
      * 得到所有系统用户信息列表
@@ -35,9 +40,9 @@ public interface SystemUserService {
      * @param password 密码
      * @return 状态码
      */
-    int updateSystemUserInfo(Integer userid,String username,String password);
+    int updateSystemUserInfo(Integer userid,String name,String username,String password);
 
-    int registerSystemUser(SystemUserVo systemUserVo);
+    int registerSystemUser(SystemUserDTO systemUserDTO);
 
     /***
      * 删除系统用户
