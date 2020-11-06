@@ -37,7 +37,7 @@ public interface SystemUserService {
      */
     int updateSystemUserInfo(Integer userid,String username,String password);
 
-    int registerSystemUSer(SystemUserVo systemUserVo);
+    int registerSystemUser(SystemUserVo systemUserVo);
 
     /***
      * 删除系统用户

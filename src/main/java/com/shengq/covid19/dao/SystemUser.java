@@ -16,4 +16,5 @@ public class SystemUser implements Serializable {
     private String updateTime;
     private int status;
     private int permission;
+    private String createTime;
 }

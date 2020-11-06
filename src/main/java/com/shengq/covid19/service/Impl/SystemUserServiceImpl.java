@@ -49,17 +49,15 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public SystemUserDTO getUserInfo(String mobile) {
         SystemUser systemUser = userMapper.findByMobile(mobile);
-        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
+        return new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
-        return systemUserDTO;
     }
 
     @Override
     public SystemUserDTO getUserInfoByName(String name) {
         SystemUser systemUser = userMapper.findByName(name);
-        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
+        return new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
-        return systemUserDTO;
     }
 
     /***
@@ -69,10 +67,10 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public List<SystemUserDTO> getAllUser() {
         List<SystemUser> userList = userMapper.findAllSystemUser();
-        List<SystemUserDTO> userDTOS = new ArrayList<>();
-        userList.forEach(systemUser -> userDTOS.add(new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
+        List<SystemUserDTO> systemUserDtos = new ArrayList<>();
+        userList.forEach(systemUser -> systemUserDtos.add(new SystemUserDTO(systemUser.getUserid(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission())));
-        return userDTOS;
+        return systemUserDtos;
     }
 
     /***
@@ -84,16 +82,22 @@ public class SystemUserServiceImpl implements SystemUserService{
      */
     @Override
     public int updateSystemUserInfo(Integer userid, String username, String password) {
-        return userMapper.updateSystemUserInfo(userid,username,password);
+        Calendar calendar= Calendar.getInstance();
+        return userMapper.updateSystemUserInfo(userid,username,password,dateFormat.format(calendar.getTime()));
     }
 
+    /***
+     * 注册系统用户
+     * @param systemUserVo
+     * @return
+     */
     @Override
-    public int registerSystemUSer(SystemUserVo systemUserVo) {
-
+    public int registerSystemUser(SystemUserVo systemUserVo) {
         Calendar calendar= Calendar.getInstance();
         String password = myPasswordEncoder.encode(systemUserVo.getPassword());
-        return userMapper.addSystemUser(4,systemUserVo.getName(),password,systemUserVo.getMobile(),
-                dateFormat.format(calendar.getTime()),Integer.parseInt(systemUserVo.getAuthority()));
+        return userMapper.addSystemUser(0,systemUserVo.getName(),password,systemUserVo.getMobile(),
+                Integer.parseInt(systemUserVo.getAuthority())
+                ,dateFormat.format(calendar.getTime()),dateFormat.format(calendar.getTime()));
     }
 
     /***
@@ -103,7 +107,8 @@ public class SystemUserServiceImpl implements SystemUserService{
      */
     @Override
     public int delSystemUser(Integer userid) {
-        return userMapper.updateSystemUserStatus(userid,-1);
+        Calendar calendar= Calendar.getInstance();
+        return userMapper.updateSystemUserStatus(userid,-1,dateFormat.format(calendar.getTime()));
     }
 
     /***
@@ -114,7 +119,8 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public int updateUserPermission(Integer userid) {
         //TODO:2020.10.29 权限分配逻辑还未完成
-        return userMapper.updateSystemUserPermission(userid,0);
+        Calendar calendar= Calendar.getInstance();
+        return userMapper.updateSystemUserPermission(userid,0,dateFormat.format(calendar.getTime()));
     }
 
 

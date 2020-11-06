@@ -45,11 +45,12 @@ public interface SystemUserMapper {
      * @param permission 权限
      * @return 状态码
      */
-    @Insert("INSERT INTO sys_user(id,username,password,mobile,update_time,status,permission)" +
-            "VALUES(#{id},#{username},#{password},#{mobile},#{update_time},0,#{permission})")
+    @Insert("INSERT INTO sys_user(id,username,password,mobile,status,permission,update_time,create_time)" +
+            "VALUES(#{id},#{username},#{password},#{mobile},0,#{permission},#{update_time},#{create_time})")
     int addSystemUser(@Param("id") Integer userid, @Param("username") String name,
                       @Param("password") String password, @Param("mobile") String mobile,
-                      @Param("update_time") String updateTime, @Param("permission") int permission);
+                      @Param("permission") int permission,@Param("update_time") String updateTime,
+                      @Param("create_time") String createTime);
 
     /***
      * 列出全部管理员账户
@@ -65,8 +66,10 @@ public interface SystemUserMapper {
      * @param password 密码
      * @return 状态码
      */
-    @Update("UPDATE sys_user SET username = #{username},password = #{password} WHERE id = #{id}")
-    int updateSystemUserInfo(@Param("id")Integer userid,@Param("username") String username,@Param("password") String password);
+    @Update("UPDATE sys_user SET username = #{username},password = #{password},update_time=${update_time}" +
+            " WHERE id = #{id}")
+    int updateSystemUserInfo(@Param("id")Integer userid,@Param("username") String username,
+                             @Param("password") String password,@Param("update_time") String updateTime);
 
     /***
      * 删除管理员账户
@@ -74,8 +77,9 @@ public interface SystemUserMapper {
      * @param status 状态值 0 正常 -1 删除
      * @return
      */
-    @Update("UPDATE sys_user SET status = #{status} WHERE id = #{id}")
-    int updateSystemUserStatus(@Param("id")Integer userid,@Param("status") int status);
+    @Update("UPDATE sys_user SET status = #{status},update_time=${update_time} WHERE id = #{id}")
+    int updateSystemUserStatus(@Param("id")Integer userid,@Param("status") int status,
+                               @Param("update_time") String updateTime);
 
     /***
      * 修改管理员权限
@@ -83,6 +87,7 @@ public interface SystemUserMapper {
      * @param permission 权限
      * @return
      */
-    @Update("UPDATE sys_user SET permission = #{permission} WHERE id = #{id}")
-    int updateSystemUserPermission(@Param("id")Integer userid,@Param("permission")int permission);
+    @Update("UPDATE sys_user SET permission = #{permission},update_time=${update_time} WHERE id = #{id}")
+    int updateSystemUserPermission(@Param("id")Integer userid,@Param("permission")int permission,
+                                   @Param("update_time") String updateTime);
 }

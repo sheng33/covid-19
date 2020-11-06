@@ -43,10 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(authenticationProvider())
                 .authorizeRequests()
                     .antMatchers("/swagger-ui.html").permitAll()
+                    .antMatchers("/webjars/**").permitAll()
                     .antMatchers("/v2/**").permitAll()
                     .antMatchers("/swagger-resources/**").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
-                    .anyRequest().authenticated()//必须授权才能访问
+//                    .anyRequest().authenticated()//必须授权才能访问
                     .and()
                 .httpBasic()
                     //未登录时，进行json格式的提示，很喜欢这种写法，不用单独写一个又一个的类
