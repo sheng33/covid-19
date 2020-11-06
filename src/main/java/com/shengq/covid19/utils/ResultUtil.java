@@ -5,12 +5,18 @@ import com.shengq.covid19.config.Result;
 public class ResultUtil {
     public static Result success(Object object) {
         Result result = new Result();
-        result.setCode(0);
+        result.setCode(200);
         result.setMsg("请求成功");
         result.setData(object);
         return result;
     }
-
+    public static Result successMsg(String msg) {
+        Result result = new Result();
+        result.setCode(200);
+        result.setMsg(msg);
+        result.setData(null);
+        return result;
+    }
     public static Result success() {
         return success(null);
     }

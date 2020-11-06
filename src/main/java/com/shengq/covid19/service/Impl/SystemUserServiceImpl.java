@@ -94,6 +94,11 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public int registerSystemUser(SystemUserVo systemUserVo) {
         Calendar calendar= Calendar.getInstance();
+        SystemUser systemUser = userMapper.findByName(systemUserVo.getName());
+        if (systemUser != null){
+            return -1;
+        }
+
         String password = myPasswordEncoder.encode(systemUserVo.getPassword());
         return userMapper.addSystemUser(0,systemUserVo.getName(),password,systemUserVo.getMobile(),
                 Integer.parseInt(systemUserVo.getAuthority())

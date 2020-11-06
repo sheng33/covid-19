@@ -26,9 +26,12 @@ public class SystemUserController {
     @ApiOperation("系统用户注册接口")
     @PostMapping(value = "/register")
     public Result register(@RequestBody SystemUserVo systemUserVo){
-        int count = systemUserService.registerSystemUSer(systemUserVo);
+        int count = systemUserService.registerSystemUser(systemUserVo);
         System.out.println("返回值"+count);
-        return ResultUtil.success();
+        if (count == -1){
+            return ResultUtil.error(201,"用户已存在");
+        }
+        return ResultUtil.successMsg("新增系统用户成功");
     }
 
     @ApiOperation("管理页登录")
