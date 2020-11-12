@@ -78,14 +78,21 @@ public class SystemUserServiceImpl implements SystemUserService{
      * 更新用户个人信息（用户名或者密码）
      * @param userid 用户id
      * @param username 用户名
-     * @param password 密码
+     * @param oldPassword 密码
      * @return 状态码
      */
     @Override
-    public int updateSystemUserInfo(Integer userid,String name, String username, String password) {
+    public int updateSystemUserInfo(Integer userid,String name, String username, String oldPassword,String newPassword) {
         Calendar calendar= Calendar.getInstance();
-        return userMapper.updateSystemUserInfo(userid,name,username,password,dateFormat.format(calendar.getTime()));
+        SystemUser systemUser = userMapper.findById(userid);
+        boolean pd = myPasswordEncoder.matches(newPassword,oldPassword);
+        if (pd){
+            return userMapper.updateSystemUserInfo(userid,name,username,newPassword,dateFormat.format(calendar.getTime()));
+        }
+        return -1;
     }
+
+
 
     /***
      * 注册系统用户

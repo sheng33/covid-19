@@ -37,10 +37,11 @@ public interface SystemUserService {
      * 更新用户个人信息（用户名或者密码）
      * @param userid 用户id
      * @param username 用户名
-     * @param password 密码
+     * @param oldPassword old密码
+     * @param newPassword new密码
      * @return 状态码
      */
-    int updateSystemUserInfo(Integer userid,String name,String username,String password);
+    int updateSystemUserInfo(Integer userid,String name,String username,String oldPassword,String newPassword);
 
     int registerSystemUser(SystemUserDTO systemUserDTO);
 

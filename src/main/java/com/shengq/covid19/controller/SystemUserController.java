@@ -14,6 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author shengQ
  */
@@ -53,16 +56,52 @@ public class SystemUserController {
 
 
     @ApiOperation("查询用户详情")
-    @GetMapping(value = "/getUserInfo")
     @ApiImplicitParam(name = "username",value = "用户名",required = true,paramType = "query"
             ,dataType = "String",defaultValue = "sheng")
+    @GetMapping(value = "/getUserInfo")
     public Result<?> getUserInfo(String username){
         SystemUserDTO systemUserVo = systemUserService.getUserInfoByName(username);
         if (systemUserVo == null){
             return ResultUtil.error(201,"无此账户");
         }
         String perssion = systemUserVo.getPermission()==0?"admin":"guest";
-        return ResultUtil.success(new SystemUserVo(systemUserVo.getUsername(),systemUserVo.getMobile(),systemUserVo.getStatus(),perssion));
+        return ResultUtil.success(new SystemUserVo(systemUserVo.getUserid(),systemUserVo.getName(),
+                systemUserVo.getUsername(),systemUserVo.getMobile(),
+                systemUserVo.getStatus(),perssion));
+    }
+    @ApiOperation("查询管理员用户列表")
+    @GetMapping(value = "/getUserList")
+    public Result<?> getUserList(){
+        List<SystemUserDTO> dtoList = systemUserService.getAllUser();
+        List<SystemUserVo>  voList = new ArrayList<>();
+        dtoList.forEach(systemUser -> {
+            String perssion = systemUser.getPermission()==0?"admin":"guest";
+            voList.add(new SystemUserVo(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
+                    systemUser.getMobile(),systemUser.getStatus(),perssion));
+        });
+        return ResultUtil.success(voList);
+    }
+    @ApiOperation("删除系统用户")
+    @ApiImplicitParam(name = "id",value = "用户id")
+    @GetMapping(value = "/delUser")
+    public Result<?> delSystemUser(Integer id){
+        int count = systemUserService.delSystemUser(id);
+        String msg = count==1?"删除成功":"删除失败";
+        return ResultUtil.success(msg);
+    }
 
+    @ApiOperation("修改系统用户密码")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userid",value = "用户id"),
+            @ApiImplicitParam(name = "name",value = "登录名"),
+            @ApiImplicitParam(name = "username",value = "用户姓名"),
+            @ApiImplicitParam(name = "oldPassword",value = "原密码"),
+            @ApiImplicitParam(name = "newPassword",value = "新密码")
+    })
+    @PostMapping("/changePassword")
+    public Result<?> changePassword(Integer userid,String name,String username,String oldPassword,String newPassword){
+        int pd = systemUserService.updateSystemUserInfo(userid,name,username,oldPassword,newPassword);
+        String msg = pd==1?"修改成功":"密码错误";
+        return ResultUtil.success(msg);
     }
 }

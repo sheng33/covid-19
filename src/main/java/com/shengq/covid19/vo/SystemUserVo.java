@@ -13,9 +13,12 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SystemUserVo implements Serializable {
     private static final long serialVersionUID = 5924312159154672690L;
+    private Integer userid;
     private String name;
     private String username;
     private String mobile;
     private int status;
     private String authority;
+
+
 }
