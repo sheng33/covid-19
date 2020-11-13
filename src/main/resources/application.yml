@@ -13,3 +13,8 @@ spring:
       max-active: 50
 server:
   port: 8080
+pagehelper:
+  auto-dialect: mysql
+  params: count=countSql
+  reasonable: true
+  support-methods-arguments: true

@@ -1,5 +1,7 @@
 package com.shengq.covid19.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shengq.covid19.config.Result;
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.service.Impl.SecurityUserDetailsServiceImpl;
@@ -20,7 +22,7 @@ import java.util.List;
 /**
  * @author shengQ
  */
-@RestController()
+@RestController
 @RequestMapping("/admin")
 @Api(tags = "管理用户端口")
 public class SystemUserController {
@@ -71,7 +73,9 @@ public class SystemUserController {
     }
     @ApiOperation("查询管理员用户列表")
     @GetMapping(value = "/getUserList")
-    public Result<?> getUserList(){
+    public Result<?> getUserList(@RequestParam(value = "page",defaultValue = "1")int page,
+                                 @RequestParam(value = "size",defaultValue = "10")int size){
+        PageHelper.startPage(page,size);
         List<SystemUserDTO> dtoList = systemUserService.getAllUser();
         List<SystemUserVo>  voList = new ArrayList<>();
         dtoList.forEach(systemUser -> {
@@ -79,7 +83,8 @@ public class SystemUserController {
             voList.add(new SystemUserVo(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
                     systemUser.getMobile(),systemUser.getStatus(),perssion));
         });
-        return ResultUtil.success(voList);
+        PageInfo<SystemUserVo> pageInfo = new PageInfo<>(voList);
+        return ResultUtil.success(pageInfo);
     }
     @ApiOperation("删除系统用户")
     @ApiImplicitParam(name = "id",value = "用户id")
