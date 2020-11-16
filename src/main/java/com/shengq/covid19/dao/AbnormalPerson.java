@@ -1,10 +1,12 @@
 package com.shengq.covid19.dao;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
+@ApiOperation("异常人员信息表")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
