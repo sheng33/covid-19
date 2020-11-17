@@ -8,6 +8,7 @@ import com.shengq.covid19.mapper.ClientUserMapper;
 import com.shengq.covid19.mapper.DailyReportMapper;
 import com.shengq.covid19.service.DailyReportService;
 import com.shengq.covid19.vo.DailyReportVo;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -28,7 +29,7 @@ public class DailyReportServerImpl implements DailyReportService {
     }
 
     @Override
-    public DailyReport findInfoById(Integer userid) {
+    public List<DailyReport> findInfoById(Integer userid) {
         return dailyReportMapper.findById(userid);
     }
 
@@ -48,6 +49,7 @@ public class DailyReportServerImpl implements DailyReportService {
             clientUser.setIstemperature(1);
             isAbnormal = true;
         }
+        // TODO 地区分析未完成
         if ("北京".equals(address)){
             clientUser.setIsarea(1);
             isAbnormal = true;
@@ -61,8 +63,6 @@ public class DailyReportServerImpl implements DailyReportService {
                     info.getAddress(),info.getAddress(),0,dateFormat.format(calendar.getTime()));
             abnormalPersonMapper.insert(abnormalPerson);
         }
-
-
 
         DailyReport dailyReport = new DailyReport(info.getUserid(),info.getAddress(),info.getTemperature(),
                 dateFormat.format(calendar.getTime()),info.getRemark());

@@ -27,9 +27,10 @@ public interface AbnormalPersonMapper {
      * 更新记录状态
      * @param userid
      * @param status
+     * @return
      */
     @Update("UPDATE abnormalperson SET status = #{status} WHERE userid = #{userid}")
-    void updateStatus(@Param("userid")Integer userid,@Param("status")String status);
+    int updateStatus(@Param("userid")Integer userid,@Param("status")String status);
 
 
     /***

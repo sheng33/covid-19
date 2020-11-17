@@ -13,7 +13,7 @@ public interface DailyReportMapper {
      * @return DailyReport
      */
     @Select("SELECT * FROM dailyreport WHERE userid = #{userid}")
-    DailyReport findById(@Param("userid")Integer userid);
+    List<DailyReport> findById(@Param("userid")Integer userid);
 
     /***
      * 插入新的日常填报记录
