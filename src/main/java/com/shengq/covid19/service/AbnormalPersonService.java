@@ -21,11 +21,11 @@ public interface AbnormalPersonService {
 
     /***
      * 更新异常人员记录状态
-     * @param userid
+     * @param id 记录id
      * @param status
      * @return
      */
-    int updateStatus(Integer userid,String status);
+    int updateStatus(Integer id,String status,String remark);
 
     /***
      * 返回所有异常人员信息

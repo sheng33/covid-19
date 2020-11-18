@@ -35,13 +35,13 @@ public class AbnormalPersonServiceImpl implements AbnormalPersonService {
 
     /***
      * 更新异常人员记录状态
-     * @param userid
+     * @param
      * @param status
      * @return
      */
     @Override
-    public int updateStatus(Integer userid, String status) {
-        return abnormalPersonMapper.updateStatus(userid,status);
+    public int updateStatus(Integer id, String status,String reamrk) {
+        return abnormalPersonMapper.updateStatus(id,status,reamrk);
     }
 
     /***

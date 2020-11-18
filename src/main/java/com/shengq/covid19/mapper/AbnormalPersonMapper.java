@@ -29,16 +29,16 @@ public interface AbnormalPersonMapper {
      * @param status
      * @return
      */
-    @Update("UPDATE abnormalperson SET status = #{status} WHERE userid = #{userid}")
-    int updateStatus(@Param("userid")Integer userid,@Param("status")String status);
+    @Update("UPDATE abnormalperson SET status = #{status},remark = #{remark} WHERE id = #{id}")
+    int updateStatus(@Param("userid")Integer userid,@Param("status")String status,@Param("remark")String remark);
 
 
     /***
      * 插入新的异常人员记录
      * @param info
      */
-    @Insert("INSERT INTO abnormalperson(userid,mobile,adress,nearestaddress,status,createtime)" +
-            "VALUES(#{info.userid},#{info.mobile},#{info.address},#{info.nearestaddress},#{info.status}," +
+    @Insert("INSERT INTO abnormalperson(userid,mobile,adress,nearestaddress,status,remark,createtime)" +
+            "VALUES(#{info.userid},#{info.mobile},#{info.address},#{info.nearestaddress},#{info.status},''," +
             "#{info.createtime})")
     void insert(@Param("info") AbnormalPerson info);
 
