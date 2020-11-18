@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Data
 public class MotionTrack implements Serializable {
     private static final long serialVersionUID = -8313574761206070270L;
+    private Integer id;
     private Integer userid;
     // 交通工具
     private String transportation;

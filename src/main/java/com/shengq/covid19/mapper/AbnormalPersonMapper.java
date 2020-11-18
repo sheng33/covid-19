@@ -37,8 +37,8 @@ public interface AbnormalPersonMapper {
      * 插入新的异常人员记录
      * @param info
      */
-    @Insert("INSERT INTO abnormalperson(userid,mobile,adress,nearestaddress,status,remark,createtime)" +
-            "VALUES(#{info.userid},#{info.mobile},#{info.address},#{info.nearestaddress},#{info.status},''," +
+    @Insert("INSERT INTO abnormalperson(id,userid,mobile,adress,nearestaddress,status,remark,createtime)" +
+            "VALUES(null,#{info.userid},#{info.mobile},#{info.address},#{info.nearestaddress},#{info.status},''," +
             "#{info.createtime})")
     void insert(@Param("info") AbnormalPerson info);
 

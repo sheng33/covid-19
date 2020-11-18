@@ -41,10 +41,12 @@ public class DailyReportServerImpl implements DailyReportService {
         String address = info.getAddress();
         ClientUser clientUser = clientUserMapper.findById(info.getUserid());
         boolean isAbnormal = false;
+        // 异常接触分析
         if (istouch){
             clientUser.setIstouch(1);
             isAbnormal = true;
         }
+        // 异常温度分析
         if (temperature>38.0){
             clientUser.setIstemperature(1);
             isAbnormal = true;
@@ -59,8 +61,8 @@ public class DailyReportServerImpl implements DailyReportService {
             clientUserMapper.updateClientUserStatus(clientUser.getUserid(),clientUser.getIstouch(),
                     clientUser.getIsarea(),clientUser.getIstemperature());
             // 存入异常人员表
-            AbnormalPerson abnormalPerson = new AbnormalPerson(clientUser.getUserid(),clientUser.getMobile(),
-                    info.getAddress(),info.getAddress(),0,dateFormat.format(calendar.getTime()));
+            AbnormalPerson abnormalPerson = new AbnormalPerson(0,clientUser.getUserid(),clientUser.getMobile(),
+                    info.getAddress(),info.getAddress(),0,"",dateFormat.format(calendar.getTime()));
             abnormalPersonMapper.insert(abnormalPerson);
         }
 

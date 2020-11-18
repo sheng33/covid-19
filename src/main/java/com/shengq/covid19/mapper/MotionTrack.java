@@ -28,8 +28,10 @@ public interface MotionTrack {
      * 插入新记录
      * @param info
      */
-    @Insert("INSERT INTO motionTrack(userid,transportation," +
-            "traveltime,serialNumber,startPoint,endPoint)")
+    @Insert("INSERT INTO motionTrack(id,userid,transportation," +
+            "traveltime,serialNumber,startPoint,endPoint)" +
+            "Values(0,#{info.userid},#{info.transportation}," +
+            "#{info.traveltime},#{info.serialNumber},#{info.startPoint},#{info.endPoint})")
     void Insert(@Param("info")MotionTrack info);
 
 }
