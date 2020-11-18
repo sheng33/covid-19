@@ -4,6 +4,7 @@ import com.shengq.covid19.config.Result;
 import com.shengq.covid19.service.AbnormalPersonService;
 import com.shengq.covid19.utils.ResultUtil;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,13 @@ public class AbnormalPersonController {
     public Result<?> getAllListByStatus(String status){
         return ResultUtil.success(abnormalPersonService.getAllByStatus(status));
     }
-
+    @ApiOperation("处理异常人员记录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "异常人员记录id",required = true,paramType = "path",dataType = "Interger"),
+            @ApiImplicitParam(name = "status",value = "状态值",required = true,paramType = "path",
+                    dataType = "int",defaultValue = "0"),
+            @ApiImplicitParam(name = "remark",value = "备注",paramType = "path",dataType = "String")
+    })
     @PostMapping("/Records")
     public Result<?> processingRecords(Integer id,String status,String remark){
         int code = abnormalPersonService.updateStatus(id,status,remark);
