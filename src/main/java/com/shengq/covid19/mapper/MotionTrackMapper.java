@@ -1,5 +1,6 @@
 package com.shengq.covid19.mapper;
 
+import com.shengq.covid19.dao.MotionTrack;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -8,7 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface MotionTrack {
+public interface MotionTrackMapper {
     /***
      * 根据用户id查询信息
      * @param userid
