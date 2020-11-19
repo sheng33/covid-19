@@ -2,6 +2,7 @@ package com.shengq.covid19.service.Impl;
 
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.service.SystemUserService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +22,7 @@ public class SecurityUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     SystemUserService userService;
 
+    @SneakyThrows
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         SystemUserDTO systemUser = userService.getUserInfoByName(name);

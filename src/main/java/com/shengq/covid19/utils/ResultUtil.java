@@ -20,6 +20,13 @@ public class ResultUtil {
         result.setData(null);
         return result;
     }
+    public static Result<Object> success(String msg,Object object) {
+        Result<Object> result = new Result<>();
+        result.setCode(200);
+        result.setMsg(msg);
+        result.setData(object);
+        return result;
+    }
     public static Result<Object> success() {
         return success(null);
     }

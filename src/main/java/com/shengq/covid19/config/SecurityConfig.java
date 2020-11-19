@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -44,9 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/webjars/**").permitAll()
                     .antMatchers("/v2/**").permitAll()
                     .antMatchers("/swagger-resources/**").permitAll()
-//                    .antMatchers("/admin/**").hasRole("ADMIN")
-//                    .antMatchers("/admin/login").permitAll()
-//                    .anyRequest().authenticated()//必须授权才能访问
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/admin/login").permitAll()
+                    .anyRequest().authenticated()//必须授权才能访问
                     .and()
                 .httpBasic()
                     //未登录时，进行json格式的提示，很喜欢这种写法，不用单独写一个又一个的类
@@ -63,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     })
                     .and()
                 .formLogin() //使用自带的登录
+                    .loginProcessingUrl("/admin/login")
                 //登录失败，返回json
                     .failureHandler((request,response,ex) -> {
                         response.setContentType("application/json;charset=utf-8");
@@ -132,6 +134,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         //对于在header里面增加token等类似情况，放行所有OPTIONS请求。
         web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
+    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //此方法在5.X过时需要提供一个PasswordEncorder的实例，否则后台汇报错误：java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
+        //auth.inMemoryAuthentication().withUser("admin").password("123456").roles("ADMIN");
+        System.out.println("22222");
+        auth.inMemoryAuthentication().passwordEncoder(new MyPasswordEncoder()).withUser("admin").password("123456").roles("ADMIN");
     }
 
     @Bean

@@ -1,7 +1,7 @@
 package com.shengq.covid19.service;
 
 import com.shengq.covid19.dto.SystemUserDTO;
-import com.shengq.covid19.vo.SystemUserVo;
+import com.shengq.covid19.exception.GlobalException;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public interface SystemUserService {
      * @param username
      * @return
      */
-    SystemUserDTO getUserInfoByName(String username);
+    SystemUserDTO getUserInfoByName(String username) throws GlobalException;
 
     /***
      * 得到所有系统用户信息列表

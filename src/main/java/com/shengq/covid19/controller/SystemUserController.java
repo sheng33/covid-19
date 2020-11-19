@@ -4,6 +4,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.shengq.covid19.config.Result;
 import com.shengq.covid19.dto.SystemUserDTO;
+import com.shengq.covid19.exception.GlobalException;
+import com.shengq.covid19.service.ClientUserService;
 import com.shengq.covid19.service.Impl.SecurityUserDetailsServiceImpl;
 import com.shengq.covid19.service.SystemUserService;
 import com.shengq.covid19.utils.ResultUtil;
@@ -12,7 +14,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,10 +29,17 @@ import java.util.List;
 @RequestMapping("/admin")
 @Api(tags = "管理用户端口")
 public class SystemUserController {
-    @Autowired
-    SystemUserService systemUserService;
-    @Autowired
-    SecurityUserDetailsServiceImpl securityUserDetailsService;
+    final SystemUserService systemUserService;
+    final SecurityUserDetailsServiceImpl securityUserDetailsService;
+    final ClientUserService clientUserService;
+
+    public SystemUserController(ClientUserService clientUserService, SystemUserService systemUserService, SecurityUserDetailsServiceImpl securityUserDetailsService) {
+        this.clientUserService = clientUserService;
+        this.systemUserService = systemUserService;
+        this.securityUserDetailsService = securityUserDetailsService;
+    }
+
+
     @ApiOperation("系统用户注册接口")
     @PostMapping(value = "/register")
     public Result<String> register(@RequestBody SystemUserDTO systemUserDTO){
@@ -48,12 +58,14 @@ public class SystemUserController {
             @ApiImplicitParam(name = "password",value = "密码",required = true,paramType = "path"
             ,dataType = "String",defaultValue = "12345")
     })
-    public Result<String> login(@RequestParam("username") String username,@RequestParam("password")String password){
+    public Result<Object> login(@RequestParam("username") String username,@RequestParam("password")String password){
+        System.out.println("testtttt");
         UserDetails systemUserDTO = securityUserDetailsService.loadUserByUsername(username);
         if (systemUserDTO != null){
             systemUserDTO.getPassword().equals(password);
         }
-        return ResultUtil.successMsg("登录成功");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return ResultUtil.success("登录成功",authentication);
     }
 
 
@@ -61,7 +73,7 @@ public class SystemUserController {
     @ApiImplicitParam(name = "username",value = "用户名",required = true,paramType = "query"
             ,dataType = "String",defaultValue = "sheng")
     @GetMapping(value = "/getUserInfo")
-    public Result<?> getUserInfo(String username){
+    public Result<?> getUserInfo(String username) throws GlobalException {
         SystemUserDTO systemUserVo = systemUserService.getUserInfoByName(username);
         if (systemUserVo == null){
             return ResultUtil.error(201,"无此账户");
@@ -109,4 +121,9 @@ public class SystemUserController {
         String msg = pd==1?"修改成功":"密码错误";
         return ResultUtil.success(msg);
     }
+
+
+
+
+
 }

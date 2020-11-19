@@ -2,10 +2,11 @@ package com.shengq.covid19.service.Impl;
 
 import com.shengq.covid19.dao.SystemUser;
 import com.shengq.covid19.dto.SystemUserDTO;
+import com.shengq.covid19.exception.GlobalException;
+import com.shengq.covid19.exception.NotFoundException;
 import com.shengq.covid19.mapper.SystemUserMapper;
 import com.shengq.covid19.service.SystemUserService;
 import com.shengq.covid19.utils.MyPasswordEncoder;
-import com.shengq.covid19.vo.SystemUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
@@ -54,8 +55,13 @@ public class SystemUserServiceImpl implements SystemUserService{
     }
 
     @Override
-    public SystemUserDTO getUserInfoByName(String name) {
+    public SystemUserDTO getUserInfoByName(String name) throws GlobalException {
         SystemUser systemUser = userMapper.findByName(name);
+
+        if (systemUser == null){
+            throw new NotFoundException("找不到用户名为【"+name+"】的用户");
+        }
+
         return new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
     }
@@ -86,6 +92,7 @@ public class SystemUserServiceImpl implements SystemUserService{
         Calendar calendar= Calendar.getInstance();
         SystemUser systemUser = userMapper.findById(userid);
         boolean pd = myPasswordEncoder.matches(newPassword,oldPassword);
+        System.out.println("test");
         if (pd){
             return userMapper.updateSystemUserInfo(userid,name,username,newPassword,dateFormat.format(calendar.getTime()));
         }
