@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Data
 public class UserSource implements Serializable {
     private static final long serialVersionUID = 1098578222471004189L;
-    private Integer userid;
+    private String userid;
     private String platform;
 
 }

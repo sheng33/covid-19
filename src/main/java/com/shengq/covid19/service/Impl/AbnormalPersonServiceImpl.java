@@ -19,7 +19,7 @@ public class AbnormalPersonServiceImpl implements AbnormalPersonService {
      * @return
      */
     @Override
-    public AbnormalPerson searchById(Integer userid) {
+    public AbnormalPerson searchById(String userid) {
         return abnormalPersonMapper.findById(userid);
     }
 
@@ -40,7 +40,7 @@ public class AbnormalPersonServiceImpl implements AbnormalPersonService {
      * @return
      */
     @Override
-    public int updateStatus(Integer id, String status,String reamrk) {
+    public int updateStatus(String id, String status,String reamrk) {
         return abnormalPersonMapper.updateStatus(id,status,reamrk);
     }
 

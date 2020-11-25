@@ -13,7 +13,7 @@ public interface DailyReportService {
      * @param userid
      * @return
      */
-    List<DailyReport> findInfoById(Integer userid);
+    List<DailyReport> findInfoById(String userid);
 
     /***
      * 每日信息填报

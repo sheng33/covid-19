@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AbnormalPersonVo {
     private Integer id;
-    private Integer userid;
+    private String userid;
     private String username;
     private String mobile;
     private String address;

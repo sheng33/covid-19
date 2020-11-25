@@ -20,14 +20,14 @@ public class ClientServiceDataTest {
     ClientUserService service;
     @Test
     void testAddUser(){
-        ClientUser clientUser = new ClientUser(4,"sheng","15223333333",
+        ClientUser clientUser = new ClientUser("4","sheng","15223333333",
                 "358888222288882282");
         int count = service.addClinetUser(clientUser);
         System.out.println("testAddUser:"+count);
     }
     @Test
     void testfindById(){
-        ClientUserDTO count = service.findById(1);
+        ClientUserDTO count = service.findById("1");
         System.out.println("testfindById:"+count);
     }
     @Test
@@ -48,14 +48,14 @@ public class ClientServiceDataTest {
     }
     @Test
     void updateClientUser(){
-        ClientUserDTO clientUserDTO = new ClientUserDTO(1,"shengxiu","19911111111",
+        ClientUserDTO clientUserDTO = new ClientUserDTO("1","shengxiu","19911111111",
                 1,1,1);
         int count = service.updateClientUser(clientUserDTO);
         System.out.println("updateClientUser:"+count);
     }
     @Test
     void delClientUserById(){
-        int count = service.delClientUserById(2);
+        int count = service.delClientUserById("2");
         System.out.println("delClientuserById:"+count);
     }
     @Test
@@ -65,7 +65,7 @@ public class ClientServiceDataTest {
     }
     @Test
     void testUpdateUserStatus(){
-        ClientUserDTO clientUserDTO = new ClientUserDTO(1,null,null,1,1,1);
+        ClientUserDTO clientUserDTO = new ClientUserDTO("1",null,null,1,1,1);
         int count = service.updateClientUserStatus(clientUserDTO);
         System.out.println("testUpdateUserStatus:"+count);
     }

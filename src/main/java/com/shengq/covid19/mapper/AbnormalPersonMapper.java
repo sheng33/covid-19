@@ -13,7 +13,7 @@ public interface AbnormalPersonMapper {
      * @return abnormalperson类
      */
     @Select("SELECT * FROM abnormalperson WHERE userid = #{userid}")
-    AbnormalPerson findById(@Param("userid")Integer userid);
+    AbnormalPerson findById(@Param("userid")String userid);
 
     /***
      * 根据用户手机号查询
@@ -30,7 +30,7 @@ public interface AbnormalPersonMapper {
      * @return
      */
     @Update("UPDATE abnormalperson SET status = #{status},remark = #{remark} WHERE id = #{id}")
-    int updateStatus(@Param("userid")Integer userid,@Param("status")String status,@Param("remark")String remark);
+    int updateStatus(@Param("userid")String userid,@Param("status")String status,@Param("remark")String remark);
 
 
     /***

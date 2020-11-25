@@ -29,7 +29,7 @@ public class DailyReportServerImpl implements DailyReportService {
     }
 
     @Override
-    public List<DailyReport> findInfoById(Integer userid) {
+    public List<DailyReport> findInfoById(String userid) {
         return dailyReportMapper.findById(userid);
     }
 

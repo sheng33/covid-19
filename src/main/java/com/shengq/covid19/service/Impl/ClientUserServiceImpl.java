@@ -1,5 +1,6 @@
 package com.shengq.covid19.service.Impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.shengq.covid19.dao.ClientUser;
 import com.shengq.covid19.dto.ClientUserDTO;
 import com.shengq.covid19.mapper.ClientUserMapper;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 @Service
 public class ClientUserServiceImpl implements ClientUserService {
@@ -19,8 +21,22 @@ public class ClientUserServiceImpl implements ClientUserService {
      * @return 用户dao类
      */
     @Override
-    public ClientUserDTO findById(Integer userId) {
+    public ClientUserDTO findById(String userId) {
         ClientUser clientUser = userMapper.findById(userId);
+
+        if (clientUser == null) return null;
+
+        ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
+                clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
+        return userDTO;
+    }
+
+    @Override
+    public ClientUserDTO findByOpenId(String openid) {
+        ClientUser clientUser = userMapper.findByOpenId(openid);
+
+        if (clientUser == null) return null;
+
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
@@ -34,6 +50,9 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public ClientUserDTO findByName(String username) {
         ClientUser clientUser = userMapper.findByName(username);
+
+        if (clientUser == null) return null;
+
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
@@ -47,6 +66,9 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public ClientUserDTO findByMobile(String mobile) {
         ClientUser clientUser = userMapper.findByMobile(mobile);
+
+        if (clientUser == null) return null;
+
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
@@ -59,7 +81,8 @@ public class ClientUserServiceImpl implements ClientUserService {
      */
     @Override
     public int addClinetUser(ClientUser user) {
-        return userMapper.addClinetUser(user.getUserid(),user.getUsername(),user.getMobile(),user.getMobile());
+        return userMapper.addClinetUser(user.getUserid(),user.getUsername(),user.getMobile(),
+                user.getMobile(), DateUtil.date(Calendar.getInstance()).toString(),user.getSessionKey(),user.getOpenid());
     }
 
     /***
@@ -91,7 +114,7 @@ public class ClientUserServiceImpl implements ClientUserService {
      * @return 成功与否状态
      */
     @Override
-    public int delClientUserById(Integer userId) {
+    public int delClientUserById(String userId) {
 
         return userMapper.delClientUserById(userId);
     }
@@ -115,6 +138,11 @@ public class ClientUserServiceImpl implements ClientUserService {
     public int updateClientUserStatus(ClientUserDTO clientUserDTO) {
         return userMapper.updateClientUserStatus(clientUserDTO.getUserid(),clientUserDTO.getIstouch(),
                 clientUserDTO.getIsarea(),clientUserDTO.getIstemperature());
+    }
+
+    @Override
+    public int updateClinetUserSession(String openId, String sessionId) {
+        return userMapper.updateClinetUserSession(openId, sessionId);
     }
 
 

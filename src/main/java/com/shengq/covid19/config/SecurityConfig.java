@@ -47,6 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/swagger-resources/**").permitAll()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/admin/login").permitAll()
+                    .antMatchers("/api/decode").permitAll()
+                    .antMatchers("/client/authorization").permitAll()
                     .anyRequest().authenticated()//必须授权才能访问
                     .and()
                 .httpBasic()

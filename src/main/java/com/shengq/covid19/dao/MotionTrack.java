@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class MotionTrack implements Serializable {
     private static final long serialVersionUID = -8313574761206070270L;
     private Integer id;
-    private Integer userid;
+    private String userid;
     // 交通工具
     private String transportation;
     // 乘车时间

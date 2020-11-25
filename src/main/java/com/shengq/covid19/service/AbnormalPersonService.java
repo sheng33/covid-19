@@ -10,7 +10,7 @@ public interface AbnormalPersonService {
      * @param userid
      * @return
      */
-    AbnormalPerson searchById(Integer userid);
+    AbnormalPerson searchById(String userid);
 
     /***
      * 根据手机号查询异常人员信息
@@ -25,7 +25,7 @@ public interface AbnormalPersonService {
      * @param status
      * @return
      */
-    int updateStatus(Integer id,String status,String remark);
+    int updateStatus(String id,String status,String remark);
 
     /***
      * 返回所有异常人员信息

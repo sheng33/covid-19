@@ -11,7 +11,9 @@ public interface ClientUserService {
      * @param userId 用户id
      * @return 用户dao类
      */
-    ClientUserDTO findById(@Param("userid") Integer userId);
+    ClientUserDTO findById(@Param("userid") String userId);
+
+    ClientUserDTO findByOpenId(@Param("openid") String openid);
 
     /***
      * 根据用户姓名查询用户信息
@@ -52,7 +54,7 @@ public interface ClientUserService {
      * @param userId 用户id
      * @return 成功与否状态
      */
-    int delClientUserById(Integer userId);
+    int delClientUserById(String userId);
 
     /***
      * 删除用户(根据手机号)
@@ -68,4 +70,5 @@ public interface ClientUserService {
      */
     int updateClientUserStatus(ClientUserDTO clientUserDTO);
 
+    int updateClinetUserSession(String openId,String sessionId);
 }

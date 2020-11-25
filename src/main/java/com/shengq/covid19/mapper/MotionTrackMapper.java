@@ -16,7 +16,7 @@ public interface MotionTrackMapper {
      * @return
      */
     @Select("SELECT * FROM motiontrack WHERE userid =#{userid} ")
-    List<MotionTrack> findById(@Param("userid")Integer userid);
+    List<MotionTrack> findById(@Param("userid")String userid);
 
     /***
      * 返回所有行动轨迹

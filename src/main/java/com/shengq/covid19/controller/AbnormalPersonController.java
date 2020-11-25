@@ -60,7 +60,7 @@ public class AbnormalPersonController {
             @ApiImplicitParam(name = "remark",value = "备注",paramType = "path",dataType = "String")
     })
     @PostMapping("/records")
-    public Result<?> processingRecords(Integer id,String status,String remark){
+    public Result<?> processingRecords(String id,String status,String remark){
         int code = abnormalPersonService.updateStatus(id,status,remark);
         if (code == 1){
             return ResultUtil.success();
@@ -71,7 +71,7 @@ public class AbnormalPersonController {
 
     @ApiOperation("通过记录id查询异常人员详细信息")
     @GetMapping("/abnormalPersonInfo")
-    public Result<?> getAbnormalPerson(Integer id){
+    public Result<?> getAbnormalPerson(String id){
         AbnormalPerson abnormalInfo = abnormalPersonService.searchById(id);
         ClientUserDTO clientUser = clientUserService.findByMobile(abnormalInfo.getMobile());
         AbnormalPersonVo abnormalVo = new AbnormalPersonVo(abnormalInfo.getId(),abnormalInfo.getUserid(),abnormalInfo.getMobile(),

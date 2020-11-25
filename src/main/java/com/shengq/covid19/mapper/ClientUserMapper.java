@@ -13,7 +13,16 @@ public interface ClientUserMapper {
      * @return 用户dao类
      */
     @Select("SELECT * FROM client_user WHERE userid = #{userid}")
-    ClientUser findById(@Param("userid") Integer userId);
+    ClientUser findById(@Param("userid") String userId);
+
+    /***
+     * 根据用户openid查询用户信息
+     * @param openid 用户openid
+     * @return 用户dao类
+     */
+    @Select("SELECT * FROM client_user WHERE openid = #{openid}")
+    ClientUser findByOpenId(@Param("openid") String openid);
+
 
     /***
      * 根据用户姓名查询用户信息
@@ -41,10 +50,13 @@ public interface ClientUserMapper {
      * @param identity
      * @return
      */
-    @Insert("INSERT INTO client_user(userid,username,mobile,identity,istouch,isarea,istemperature)" +
-            " VALUES(#{userid},#{username},#{mobile},#{identity},0,0,0)")
-    int addClinetUser(@Param("userid")Integer userid,@Param("username") String username,
-                      @Param("mobile")String mobile,@Param("identity") String identity);
+    @Insert("INSERT INTO client_user(userid,username,mobile,identity,istouch,isarea,istemperature,createTime,sessionKey,openid)" +
+            " VALUES(#{userid},#{username},#{mobile},#{identity},0,0,0,#{createTime},#{sessionKey},#{openid})")
+    int addClinetUser(@Param("userid")String userid,@Param("username") String username,
+                      @Param("mobile")String mobile,@Param("identity") String identity,@Param("createTime") String createTime,
+                      @Param("sessionKey")String sessionKey,@Param("openid")String openid);
+
+
 
     /***
      * 查询所有用户
@@ -61,7 +73,7 @@ public interface ClientUserMapper {
      * @return 成功与否状态
      */
     @Update("UPDATE client_user SET username=#{username},mobile=#{mobile} WHERE userid=#{userid}")
-    int updateClientUser(@Param("userid")Integer userId,@Param("username")String username,@Param("mobile")String mobile);
+    int updateClientUser(@Param("userid")String userId,@Param("username")String username,@Param("mobile")String mobile);
 
 
     /***
@@ -73,15 +85,18 @@ public interface ClientUserMapper {
      * @return
      */
     @Update("UPDATE client_user SET istouch=#{istouch},isarea=#{isarea},istemperature=#{istemperature} WHERE userid=#{userid}")
-    int updateClientUserStatus(@Param("userid")Integer userId,@Param("istouch")int istouch,
+    int updateClientUserStatus(@Param("userid")String userId,@Param("istouch")int istouch,
                                @Param("isarea")int isarea,@Param("istemperature")int istemperature);
+
+    @Update("UPDATE client_user SET sessionkey = #{sessionkey} WHERE openid = #{openid}")
+    int updateClinetUserSession(@Param("openid")String openid,@Param("sessionkey")String sessionkey);
     /***
      * 删除用户(根据用户id)
      * @param userId 用户id
      * @return 成功与否状态
      */
     @Delete("DELETE FROM client_user WHERE userid=#{userid}")
-    int delClientUserById(@Param("userid")Integer userId);
+    int delClientUserById(@Param("userid")String userId);
 
     /***
      * 删除用户(根据手机号)

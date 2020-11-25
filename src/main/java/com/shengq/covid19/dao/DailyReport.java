@@ -13,7 +13,7 @@ import java.io.Serializable;
 public class DailyReport implements Serializable {
     private static final long serialVersionUID = 3701414900314642145L;
     private Integer id;
-    private Integer userid;
+    private String userid;
     private String address;
     private String temperature;
     private String createTime;

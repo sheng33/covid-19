@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ClientUserDTO implements Serializable {
     private static final long serialVersionUID = -2565028992218051744L;
-    private Integer userid;
+    private String userid;
     private String username;
     private String mobile;
     private int istouch;

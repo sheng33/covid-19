@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserSourceMapper {
 
     @Select("SELECT * FROM userSource WHERE userid = #{userid}")
-    UserSource findById(@Param("userid")Integer userid);
+    UserSource findById(@Param("userid")String userid);
 
     @Insert("INSERT SET userSource(userid,platform)" +
             "VALUES(#{userSource.userid},#{userSource.platform})")

@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 public class DailyReportVo implements Serializable {
     private static final long serialVersionUID = -7463585936636054665L;
-    private Integer userid;
+    private String userid;
     private String address;
     private String temperature;
     private String remark;
