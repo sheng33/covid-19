@@ -65,7 +65,6 @@ public class DailyReportServerImpl implements DailyReportService {
                     info.getAddress(),info.getAddress(),0,"",dateFormat.format(calendar.getTime()));
             abnormalPersonMapper.insert(abnormalPerson);
         }
-
         DailyReport dailyReport = new DailyReport(0,info.getUserid(),info.getAddress(),info.getTemperature(),
                 dateFormat.format(calendar.getTime()),info.getRemark());
         return dailyReportMapper.insert(dailyReport);

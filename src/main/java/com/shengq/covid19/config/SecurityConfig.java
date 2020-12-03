@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/admin/login").permitAll()
                     .antMatchers("/api/decode").permitAll()
-                    .antMatchers("/client/authorization").permitAll()
+                    .antMatchers("/client/**").permitAll()
                     .anyRequest().authenticated()//必须授权才能访问
                     .and()
                 .httpBasic()

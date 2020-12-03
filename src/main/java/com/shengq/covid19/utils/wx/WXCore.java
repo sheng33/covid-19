@@ -42,7 +42,6 @@ public class WXCore {
      * @throws Exception
      */
     public JsonNode getUserInfo(String encryptedData, String sessionkey, String iv){
-        System.out.println("开始解密：encryptedData="+encryptedData+", sessionkey="+sessionkey+",iv="+iv);
         // 被加密的数据
         byte[] dataByte = Base64.decode(encryptedData);
         // 加密秘钥

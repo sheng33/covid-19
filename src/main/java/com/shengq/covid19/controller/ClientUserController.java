@@ -13,9 +13,11 @@ import com.shengq.covid19.utils.wx.WXCore;
 import com.shengq.covid19.vo.DailyReportVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
 import java.util.Arrays;
 
 @RestController
@@ -33,19 +35,35 @@ public class ClientUserController {
     @ApiOperation("信息授权接口")
     @PostMapping("/authorization")
     public Result<?> authorization(@RequestBody JsonNode json){
-        String iv = json.get("iv").asText();
-        String encryptedData = json.get("encryptedData").asText();
-        String rawData = json.get("rawData").asText();
-        System.out.println(encryptedData);
-        ClientUser clientUser = clientMapper.findById(json.get("userid").asText());
-        JsonNode jsonNode = wxCore.getUserInfo(encryptedData,clientUser.getSessionKey(),iv);
-        clientUser.setUsername(jsonNode.get("nickName").asText());
-
-
-        System.out.println(jsonNode);
-        return ResultUtil.success();
+        String userid = json.get("userid").asText();
+        System.out.println(userid);
+        ClientUser clientUser = clientMapper.findById(userid);
+        if (clientUser.getUsername() == null || clientUser.getMobile() == null){
+            return  ResultUtil.error(-1,"用户信息不完整");
+        }else {
+            return ResultUtil.success(clientUser);
+        }
     }
 
+    @ApiOperation("用户信息绑定")
+    @PostMapping("/userBind")
+    public Result<?> userBind(@RequestBody JsonNode jsonNode){
+        String userid = jsonNode.get("userid").asText();
+        String username = jsonNode.get("username").asText();
+        String iphone = jsonNode.get("phone").asText();
+        String smsCode = jsonNode.get("smsCode").asText();
+        int sql_code = 0;
+        if (smsCode.equals("1234")){
+            sql_code = clientMapper.updateClientUser(userid,username,iphone);
+        }else {
+            return ResultUtil.error(-1,"验证码错误");
+        }
+        if (sql_code == 1){
+            return ResultUtil.success("绑定成功",null);
+        }
+        return ResultUtil.error(-100,"未知错误");
+
+    }
     @ApiOperation("每日信息填报")
     @PostMapping("/fillinformation")
     public Result<?> fillInformation(@RequestBody DailyReportVo dailyInfo){
