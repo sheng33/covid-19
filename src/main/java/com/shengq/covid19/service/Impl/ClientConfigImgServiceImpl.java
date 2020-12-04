@@ -16,14 +16,11 @@ import java.util.List;
 public class ClientConfigImgServiceImpl implements ClientConfigImgService {
     @Autowired
     ClientConfigImgMapper configImgMapper;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
     @Override
     public int addImage(String imageName, String imageUrl) {
-        Calendar calendar= Calendar.getInstance();
         SystemUserLoginDetail userDetails = (SystemUserLoginDetail) SecurityContextHolder.
                 getContext().getAuthentication().getPrincipal();
-        configImgMapper.addSysConfig(imageName,imageUrl,userDetails.getId());
-        return 0;
+        return         configImgMapper.addSysConfig(imageName,imageUrl,userDetails.getId());
     }
 
     @Override
