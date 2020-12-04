@@ -33,7 +33,7 @@ public class SystemUserServiceImpl implements SystemUserService{
         if (systemUser == null){
             return null;
         }
-        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),
+        SystemUserDTO systemUserDTO = new SystemUserDTO(systemUser.getId(),systemUser.getName(),
                 systemUser.getUsername(),systemUser.getPassword(),systemUser.getMobile(),
                 systemUser.getStatus(),systemUser.getPermission());
         return systemUserDTO;
@@ -50,7 +50,7 @@ public class SystemUserServiceImpl implements SystemUserService{
         if (systemUser == null){
             return null;
         }
-        return new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
+        return new SystemUserDTO(systemUser.getId(),systemUser.getName(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
     }
 
@@ -62,7 +62,7 @@ public class SystemUserServiceImpl implements SystemUserService{
             throw new NotFoundException("找不到用户名为【"+name+"】的用户");
         }
 
-        return new SystemUserDTO(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
+        return new SystemUserDTO(systemUser.getId(),systemUser.getName(),systemUser.getUsername(),
                 systemUser.getPassword(),systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission());
     }
 
@@ -74,7 +74,7 @@ public class SystemUserServiceImpl implements SystemUserService{
     public List<SystemUserDTO> getAllUser() {
         List<SystemUser> userList = userMapper.findAllSystemUser();
         List<SystemUserDTO> systemUserDtos = new ArrayList<>();
-        userList.forEach(systemUser -> systemUserDtos.add(new SystemUserDTO(systemUser.getUserid(),
+        userList.forEach(systemUser -> systemUserDtos.add(new SystemUserDTO(systemUser.getId(),
                 systemUser.getName(),systemUser.getUsername(),systemUser.getPassword(),
                 systemUser.getMobile(),systemUser.getStatus(),systemUser.getPermission())));
         return systemUserDtos;
@@ -116,8 +116,7 @@ public class SystemUserServiceImpl implements SystemUserService{
 
         String password = myPasswordEncoder.encode(systemUserDTO.getPassword());
         return userMapper.addSystemUser(0,systemUserDTO.getName(),systemUserDTO.getUsername(),
-                password,systemUserDTO.getMobile(),systemUserDTO.getPermission(),
-                dateFormat.format(calendar.getTime()),dateFormat.format(calendar.getTime()));
+                password,systemUserDTO.getMobile(),systemUserDTO.getPermission());
     }
 
     /***

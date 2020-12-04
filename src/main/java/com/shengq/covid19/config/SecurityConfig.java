@@ -77,6 +77,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         if (ex instanceof UsernameNotFoundException || ex instanceof BadCredentialsException) {
                             map.put("message","用户名或密码错误");
                         } else if (ex instanceof DisabledException) {
+                            System.out.println(ex);
                             map.put("message","账户被禁用");
                         } else {
                             map.put("message","登录失败!");
@@ -141,8 +142,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         //此方法在5.X过时需要提供一个PasswordEncorder的实例，否则后台汇报错误：java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
         //auth.inMemoryAuthentication().withUser("admin").password("123456").roles("ADMIN");
-        System.out.println("22222");
-        auth.inMemoryAuthentication().passwordEncoder(new MyPasswordEncoder()).withUser("admin").password("123456").roles("ADMIN");
+        auth.userDetailsService(myCustomUserService).passwordEncoder(myPasswordEncoder);
     }
 
     @Bean

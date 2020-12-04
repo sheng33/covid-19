@@ -82,7 +82,7 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public int addClinetUser(ClientUser user) {
         return userMapper.addClinetUser(user.getUserid(),user.getUsername(),user.getMobile(),
-                user.getMobile(), DateUtil.date(Calendar.getInstance()).toString(),user.getSessionKey(),user.getOpenid());
+                user.getMobile(),user.getSessionKey(),user.getOpenid());
     }
 
     /***

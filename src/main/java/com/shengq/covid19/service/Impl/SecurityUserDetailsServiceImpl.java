@@ -1,5 +1,6 @@
 package com.shengq.covid19.service.Impl;
 
+import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.dto.SystemUserDTO;
 import com.shengq.covid19.service.SystemUserService;
 import lombok.SneakyThrows;
@@ -9,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * @author shengQ
  */
-@Service
+@Component
 public class SecurityUserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     SystemUserService userService;
@@ -26,15 +28,14 @@ public class SecurityUserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
         SystemUserDTO systemUser = userService.getUserInfoByName(name);
+        System.out.println(systemUser);
         if (systemUser == null) {
             throw new UsernameNotFoundException("管理员账户不存在");
         }
-        return new org.springframework.security.core.userdetails.User(systemUser.getUsername(),
-                systemUser.getPassword(),
-                systemUser.getStatus()==0,
-                true,
-                true,
-                true,
+        System.out.println(systemUser.getStatus()==1);
+        return new SystemUserLoginDetail(
+                systemUser.getId(),systemUser.getUsername(),systemUser.getPassword(),
+                systemUser.getStatus()==1,
                 getGrantedAuthority(systemUser));
     }
 

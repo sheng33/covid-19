@@ -59,7 +59,6 @@ public class SystemUserController {
             ,dataType = "String",defaultValue = "12345")
     })
     public Result<Object> login(@RequestParam("username") String username,@RequestParam("password")String password){
-        System.out.println("testtttt");
         UserDetails systemUserDTO = securityUserDetailsService.loadUserByUsername(username);
         if (systemUserDTO != null){
             systemUserDTO.getPassword().equals(password);
@@ -79,7 +78,7 @@ public class SystemUserController {
             return ResultUtil.error(201,"无此账户");
         }
         String perssion = systemUserVo.getPermission()==0?"admin":"guest";
-        return ResultUtil.success(new SystemUserVo(systemUserVo.getUserid(),systemUserVo.getName(),
+        return ResultUtil.success(new SystemUserVo(systemUserVo.getId(),systemUserVo.getName(),
                 systemUserVo.getUsername(),systemUserVo.getMobile(),
                 systemUserVo.getStatus(),perssion));
     }
@@ -92,7 +91,7 @@ public class SystemUserController {
         List<SystemUserVo>  voList = new ArrayList<>();
         dtoList.forEach(systemUser -> {
             String perssion = systemUser.getPermission()==0?"admin":"guest";
-            voList.add(new SystemUserVo(systemUser.getUserid(),systemUser.getName(),systemUser.getUsername(),
+            voList.add(new SystemUserVo(systemUser.getId(),systemUser.getName(),systemUser.getUsername(),
                     systemUser.getMobile(),systemUser.getStatus(),perssion));
         });
         PageInfo<SystemUserVo> pageInfo = new PageInfo<>(voList);

@@ -4,6 +4,7 @@ import cn.hutool.core.codec.Base64;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.shengq.covid19.config.Result;
 import com.shengq.covid19.dao.ClientUser;
+import com.shengq.covid19.dao.SystemUserLoginDetail;
 import com.shengq.covid19.dto.ClientUserDTO;
 import com.shengq.covid19.mapper.ClientUserMapper;
 import com.shengq.covid19.service.ClientUserService;
@@ -15,6 +16,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.ResultSet;
@@ -32,6 +35,8 @@ public class ClientUserController {
     DailyReportService dailyReportService;
     @Autowired
     WXCore wxCore;
+
+
     @ApiOperation("信息授权接口")
     @PostMapping("/authorization")
     public Result<?> authorization(@RequestBody JsonNode json){
@@ -44,6 +49,7 @@ public class ClientUserController {
             return ResultUtil.success(clientUser);
         }
     }
+
 
     @ApiOperation("用户信息绑定")
     @PostMapping("/userBind")

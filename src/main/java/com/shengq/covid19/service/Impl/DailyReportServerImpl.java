@@ -35,7 +35,6 @@ public class DailyReportServerImpl implements DailyReportService {
 
     @Override
     public int addNewRecording(DailyReportVo info) {
-        Calendar calendar= Calendar.getInstance();
         boolean istouch = info.isIstouch();
         float temperature = Float.parseFloat(info.getTemperature());
         String address = info.getAddress();
@@ -62,11 +61,11 @@ public class DailyReportServerImpl implements DailyReportService {
                     clientUser.getIsarea(),clientUser.getIstemperature());
             // 存入异常人员表
             AbnormalPerson abnormalPerson = new AbnormalPerson(0,clientUser.getUserid(),clientUser.getMobile(),
-                    info.getAddress(),info.getAddress(),0,"",dateFormat.format(calendar.getTime()));
+                    info.getAddress(),info.getAddress(),0,"","");
             abnormalPersonMapper.insert(abnormalPerson);
         }
         DailyReport dailyReport = new DailyReport(0,info.getUserid(),info.getAddress(),info.getTemperature(),
-                dateFormat.format(calendar.getTime()),info.getRemark());
+                "",info.getRemark());
         return dailyReportMapper.insert(dailyReport);
     }
 

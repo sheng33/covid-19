@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SystemUserDTO implements Serializable {
     private static final long serialVersionUID = 2032468700387603006L;
-    private Integer userid;
+    private Integer id;
     private String name;
     private String username;
     private String password;

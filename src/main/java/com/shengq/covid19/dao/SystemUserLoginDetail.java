@@ -1,66 +1,47 @@
 package com.shengq.covid19.dao;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-
-@Component
-public class SystemUserLoginDetail  implements UserDetails {
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class SystemUserLoginDetail  implements UserDetails, CredentialsContainer {
 
     private static final long serialVersionUID = -7734484524122384432L;
-
+    private Integer id;
     private String username;
-
     private String password;
-
-    private Boolean isAccountNonExpired;
-
+    private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
-
-    public void setAccountNonExpired(Boolean accountNonExpired) {
-        isAccountNonExpired = accountNonExpired;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @Override
     public String getPassword() {
         return password;
     }
-
     @Override
     public String getUsername() {
         return username;
     }
-
     @Override
     public boolean isAccountNonExpired() {
-        return isAccountNonExpired;
+        return true;
     }
-
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
@@ -69,5 +50,29 @@ public class SystemUserLoginDetail  implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "SystemUserLoginDetail{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + enabled +
+                ", authorities=" + authorities +
+                '}';
+    }
+
+    public boolean getStatus() {
+        return enabled;
+    }
+
+    public void setStatus(boolean status) {
+        this.enabled = status;
+    }
+
+    @Override
+    public void eraseCredentials() {
+        this.password = null;
     }
 }

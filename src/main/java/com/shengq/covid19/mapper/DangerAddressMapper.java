@@ -15,13 +15,12 @@ public interface DangerAddressMapper {
      * @param city
      * @param area
      * @param status
-     * @param createtime
      * @return
      */
     @Insert("Insert INTO dangeraddress" +
-            "Values(id,province,city,area,status,createtime)")
+            "Values(id,province,city,area,status)")
     int insert(@Param("id")String id, @Param("province")String province,@Param("city")String city,
-               @Param("area")String area,@Param("status")String status,@Param("createtime")String createtime);
+               @Param("area")String area,@Param("status")String status);
 
 
     /***

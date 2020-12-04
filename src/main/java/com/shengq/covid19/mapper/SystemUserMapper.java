@@ -42,12 +42,11 @@ public interface SystemUserMapper {
      * @param permission 权限
      * @return 状态码
      */
-    @Insert("INSERT INTO sys_user(id,username,password,mobile,status,permission,update_time,create_time)" +
-            "VALUES(#{id},#{name},#{username},#{password},#{mobile},0,#{permission},#{update_time},#{create_time})")
+    @Insert("INSERT INTO sys_user(id,username,password,mobile,status,permission)" +
+            "VALUES(#{id},#{name},#{username},#{password},#{mobile},0,#{permission})")
     int addSystemUser(@Param("id") Integer userid,@Param("name") String name,@Param("username") String username,
                       @Param("password") String password, @Param("mobile") String mobile,
-                      @Param("permission") int permission,@Param("update_time") String updateTime,
-                      @Param("create_time") String createTime);
+                      @Param("permission") int permission);
 
     /***
      * 列出全部管理员账户
