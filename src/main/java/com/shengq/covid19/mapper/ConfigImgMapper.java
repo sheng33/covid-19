@@ -12,7 +12,7 @@ public interface ConfigImgMapper {
      * @return
      */
     @Select("SELECT *  FROM config_img")
-    List<ConfigImg> getAllImg();
+    List<ConfigImg> findAllImg();
 
     /***
      * 获取所有资源图片来自图片类型
@@ -20,7 +20,7 @@ public interface ConfigImgMapper {
      * @return
      */
     @Select("SELECT * FROM config_img WHERE type = #{type}")
-    List<ConfigImg> getAllImgByType(@Param("type") Integer type);
+    List<ConfigImg> findAllImgByType(@Param("type") Integer type);
 
 
 
@@ -49,5 +49,12 @@ public interface ConfigImgMapper {
      * @return
      */
     @Select("SELECT * FROM config_img WHERE id = #{id}")
-    ConfigImg getImg(@Param("id")Integer id);
+    ConfigImg findImgById(@Param("id")Integer id);
+    /***
+     * 根据id查询图片记录
+     * @param imgname
+     * @return
+     */
+    @Select("SELECT * FROM config_img WHERE imgname = #{imgname}")
+    ConfigImg findImgByimgName(@Param("imgname")String imgName);
 }

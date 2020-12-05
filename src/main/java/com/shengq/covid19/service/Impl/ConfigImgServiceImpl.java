@@ -26,17 +26,22 @@ public class ConfigImgServiceImpl implements ConfigImgService {
     }
 
     @Override
-    public ConfigImg getImage(Integer id) {
-        return configImgMapper.getImg(id);
+    public ConfigImg getImageById(Integer id) {
+        return configImgMapper.findImgById(id);
+    }
+
+    @Override
+    public ConfigImg getImgByimgName(String imgName) {
+        return configImgMapper.findImgByimgName(imgName);
     }
 
     @Override
     public List<ConfigImg> getAllImages() {
-        return configImgMapper.getAllImg();
+        return configImgMapper.findAllImg();
     }
 
     @Override
     public List<ConfigImg> getAllImgByType(Integer type) {
-        return configImgMapper.getAllImgByType(type);
+        return configImgMapper.findAllImgByType(type);
     }
 }

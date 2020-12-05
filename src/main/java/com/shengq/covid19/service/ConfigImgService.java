@@ -8,7 +8,8 @@ import java.util.List;
 public interface ConfigImgService {
     int addImage(String imageName,String imageUrl,Integer type);
     int delImage(Integer id);
-    ConfigImg getImage(Integer id);
+    ConfigImg getImageById(Integer id);
+    ConfigImg getImgByimgName(String imgName);
     List<ConfigImg> getAllImages();
     List<ConfigImg> getAllImgByType(Integer type);
 }
