@@ -50,7 +50,7 @@ public interface ClientUserMapper {
      * @param identity
      * @return
      */
-    @Insert("INSERT INTO client_user(userid,username,mobile,identity,istouch,isarea,istemperature,essionKey,openid)" +
+    @Insert("INSERT INTO client_user(userid,username,mobile,identity,istouch,isarea,istemperature,sessionKey,openid)" +
             " VALUES(#{userid},#{username},#{mobile},#{identity},0,0,0,#{sessionKey},#{openid})")
     int addClinetUser(@Param("userid")String userid,@Param("username") String username,
                       @Param("mobile")String mobile,@Param("identity") String identity,

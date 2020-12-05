@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.shengq.covid19.config.Result;
+import com.shengq.covid19.dao.ClientMenu;
 import com.shengq.covid19.dao.ConfigImg;
 import com.shengq.covid19.service.ClientMenuService;
 import com.shengq.covid19.service.ConfigImgService;
 import com.shengq.covid19.utils.ResultUtil;
+import com.shengq.covid19.vo.ClientMenuVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +79,13 @@ public class ClinetSysConfigController {
             return ResultUtil.error(-1,"新增失败");
 
         }
+    }
+
+    @ApiOperation("获取用户菜单")
+    @GetMapping(value = "/getMenuList")
+    public Result<?> getMenuList(){
+        List<ClientMenuVo> clientMenuVoList = menuService.getAllMenuByStatus_Auth(0,0);
+        return ResultUtil.success(clientMenuVoList);
     }
 
 

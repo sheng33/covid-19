@@ -23,9 +23,7 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public ClientUserDTO findById(String userId) {
         ClientUser clientUser = userMapper.findById(userId);
-
         if (clientUser == null) return null;
-
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
@@ -34,9 +32,7 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public ClientUserDTO findByOpenId(String openid) {
         ClientUser clientUser = userMapper.findByOpenId(openid);
-
         if (clientUser == null) return null;
-
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
@@ -50,9 +46,7 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public ClientUserDTO findByName(String username) {
         ClientUser clientUser = userMapper.findByName(username);
-
         if (clientUser == null) return null;
-
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
@@ -66,9 +60,7 @@ public class ClientUserServiceImpl implements ClientUserService {
     @Override
     public ClientUserDTO findByMobile(String mobile) {
         ClientUser clientUser = userMapper.findByMobile(mobile);
-
         if (clientUser == null) return null;
-
         ClientUserDTO userDTO = new ClientUserDTO(clientUser.getUserid(),clientUser.getUsername(),
                 clientUser.getMobile(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
         return userDTO;
