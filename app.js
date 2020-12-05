@@ -1,7 +1,10 @@
 //app.js
+var urlConfig = require('./urlConfig.js');
 App({
   onLaunch: function () {
     // 展示本地存储能力
+    wx.setStorageSync('urlConfig',urlConfig);
+    urlConfig = wx.getStorageSync('urlConfig')
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
@@ -10,7 +13,7 @@ App({
       success: res => {
         // 发送 res.code 到后台换取 openId, sessionKey, unionId
         wx.request({
-          url: 'http://192.168.211.8:8080/api/decode',
+          url: urlConfig.decode,
           data:{
             code:res.code
           },

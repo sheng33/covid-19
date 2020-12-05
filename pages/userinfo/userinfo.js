@@ -93,8 +93,10 @@ Page({
 
   },
   submitInfo(){
+    var urlConfig = (wx.getStorageSync('urlConfig'));
+    var that = this
     wx.request({
-      url: "http://192.168.211.8:8080/client/userBind",
+      url: urlConfig.userBind,
       data:{
         userid:wx.getStorageSync('userid'),
         username:this.data.username,
@@ -116,7 +118,6 @@ Page({
               url: '../index/index',
             })
           },2000)
-        
           console.log("绑定成功")
         }
       }

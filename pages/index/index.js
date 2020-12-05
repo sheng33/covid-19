@@ -11,8 +11,9 @@ Page({
   },
   onLoad: function () {
     var that = this
+    var urlConfig = (wx.getStorageSync('urlConfig'));
     wx.request({
-      url: 'http://192.168.211.8:8080/client/authorization',
+      url: urlConfig.authorization,
       data:{
         userid:wx.getStorageSync('userid'),
       },
@@ -22,11 +23,31 @@ Page({
           that.popup = that.selectComponent("#popup");
           that.popup.showPopup();
         }
+        if(result.statusCode == 500){
+          setTimeout(function(){
+            wx.request({
+              url: urlConfig.authorization,
+              data:{
+                userid:wx.getStorageSync('userid'),
+              },
+              method:"POST",
+              success(result){
+                if(result.data.code == -1){
+                  that.popup = that.selectComponent("#popup");
+                  that.popup.showPopup();
+                }
+              }
+            })
+          },2000)
+        }
         console.log(result)
+      },
+      fail(res){
+        console.log("授权失败")
       }
     }),
     wx.request({
-      url: 'http://localhost:8080/clientsysConfig/getBanner',
+      url: urlConfig.getBanner,
       data:{
         bannerId:1
       },
@@ -38,7 +59,7 @@ Page({
       }
     }),
     wx.request({
-      url: 'http://localhost:8080/clientsysConfig/getMenuList',
+      url: urlConfig.getMenuList,
       method:'GET',
       success(result){
         that.setData({
