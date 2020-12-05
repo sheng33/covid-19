@@ -1,14 +1,23 @@
 {
+  "usingComponents": {
+    "popup":"./component/popup/popup",
+    "van-empty": "@vant/weapp/empty/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-notice-bar": "@vant/weapp/notice-bar/index"
+  },
   "pages":[
     "pages/index/index",
+    "pages/userinfo/userinfo",
     "pages/logs/logs"
   ],
   "window":{
+    "backgroundColor": "#F7F8FA",
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "Weixin",
+    "navigationBarBackgroundColor": "#F7F8FA",
+    "navigationBarTitleText": "Covid19信息客户端",
     "navigationBarTextStyle":"black"
   },
-  "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

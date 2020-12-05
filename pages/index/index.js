@@ -5,50 +5,54 @@ const app = getApp()
 Page({
   data: {
     motto: 'Hello World',
-    userInfo: {},
-    hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
-  },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
+    netStatus:true,
+    menuList:[],
+    "imgUrl":""
   },
   onLoad: function () {
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
+    var that = this
+    wx.request({
+      url: 'http://192.168.211.8:8080/client/authorization',
+      data:{
+        userid:wx.getStorageSync('userid'),
+      },
+      method:"POST",
+      success(result){
+        if(result.data.code == -1){
+          that.popup = that.selectComponent("#popup");
+          that.popup.showPopup();
+        }
+        console.log(result)
+      }
+    }),
+    wx.request({
+      url: 'http://localhost:8080/clientsysConfig/getBanner',
+      data:{
+        bannerId:1
+      },
+      method:"GET",
+      success(result){
+        that.setData({
+          imgUrl: result.data.data.imgUrl
         })
       }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-        }
-      })
-    }
+    }),
+    wx.request({
+      url: 'http://localhost:8080/clientsysConfig/getMenuList',
+      method:'GET',
+      success(result){
+        that.setData({
+          menuList : result.data.data
+        })
+        console.log(result.data.data)
+      }
+    })
   },
-  getUserInfo: function(e) {
-    console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
+  //确认事件
+  _success() {
+    this.popup.hidePopup();
+    wx.navigateTo({
+      url: '../userinfo/userinfo',
     })
   }
 })
