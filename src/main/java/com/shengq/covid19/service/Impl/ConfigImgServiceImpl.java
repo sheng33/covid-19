@@ -1,26 +1,23 @@
 package com.shengq.covid19.service.Impl;
 
-import com.shengq.covid19.dao.ClientConfigImg;
+import com.shengq.covid19.dao.ConfigImg;
 import com.shengq.covid19.dao.SystemUserLoginDetail;
-import com.shengq.covid19.mapper.ClientConfigImgMapper;
-import com.shengq.covid19.service.ClientConfigImgService;
+import com.shengq.covid19.mapper.ConfigImgMapper;
+import com.shengq.covid19.service.ConfigImgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 @Service
-public class ClientConfigImgServiceImpl implements ClientConfigImgService {
+public class ConfigImgServiceImpl implements ConfigImgService {
     @Autowired
-    ClientConfigImgMapper configImgMapper;
+    ConfigImgMapper configImgMapper;
     @Override
-    public int addImage(String imageName, String imageUrl) {
+    public int addImage(String imageName, String imageUrl,Integer type) {
         SystemUserLoginDetail userDetails = (SystemUserLoginDetail) SecurityContextHolder.
                 getContext().getAuthentication().getPrincipal();
-        return         configImgMapper.addSysConfig(imageName,imageUrl,userDetails.getId());
+        return         configImgMapper.addSysConfig(imageName,imageUrl,userDetails.getId(),type);
     }
 
     @Override
@@ -29,12 +26,17 @@ public class ClientConfigImgServiceImpl implements ClientConfigImgService {
     }
 
     @Override
-    public ClientConfigImg getImage(Integer id) {
+    public ConfigImg getImage(Integer id) {
         return configImgMapper.getImg(id);
     }
 
     @Override
-    public List<ClientConfigImg> getAllImages() {
+    public List<ConfigImg> getAllImages() {
         return configImgMapper.getAllImg();
+    }
+
+    @Override
+    public List<ConfigImg> getAllImgByType(Integer type) {
+        return configImgMapper.getAllImgByType(type);
     }
 }
