@@ -42,11 +42,12 @@ public class ClientUserController {
     public Result<?> authorization(@RequestBody JsonNode json){
         String userid = json.get("userid").asText();
         if (userid=="")   return ResultUtil.error(500,"userid不能为空");
-        ClientUser clientUser = clientMapper.findById(userid);
+        ClientUserDTO clientUser = clientService.findById(userid);
         if (clientUser == null) return ResultUtil.error(500,"clientUser为空");
         if (clientUser.getUsername() == null || clientUser.getMobile() == null){
             return  ResultUtil.error(-1,"用户信息不完整");
         }else {
+
             return ResultUtil.success(clientUser);
         }
     }
