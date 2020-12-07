@@ -5,7 +5,8 @@
     "van-image": "@vant/weapp/image/index",
     "van-row": "@vant/weapp/row/index",
     "van-col": "@vant/weapp/col/index",
-    "van-notice-bar": "@vant/weapp/notice-bar/index"
+    "van-notice-bar": "@vant/weapp/notice-bar/index",
+    "van-tag": "@vant/weapp/tag/index"
   },
   "pages":[
     "pages/index/index",

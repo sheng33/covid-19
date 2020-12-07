@@ -33,9 +33,10 @@
       <view class="grid">
         <van-grid clickable icon-size="40px" gutter="{{ 10 }}" >
         <van-grid-item  icon="/static/img/identity-01.svg" text="个人信息"/>
-          <van-grid-item icon="{{value.menu_imgUrl}}"
-          link-type="navigateTo"
-          text="{{value.menu_name}}" url="{{value.menu_url}}" wx:for="{{ menuList}}" wx:for-item="value" />
+        <van-grid-item icon="{{value.menu_imgUrl}}"
+          link-type="navigateTo" 
+          text="{{value.menu_name}}" url="{{value.menu_url}}?auth=false" 
+           wx:for="{{ menuList}}" wx:for-item="value" />
         </van-grid>
       </view>
   </view>

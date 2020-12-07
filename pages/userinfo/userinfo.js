@@ -5,19 +5,23 @@ var interval = null
 Page({
   data: {
     title:"信息绑定",
-    wxname:"test",
-    username:"sheng",
-    phone:"15297987428",
+    userinfo:{
+      username:"",
+      mobile:"",
+      isarea:0,
+      istemperature:0,
+      istouch:0,
+    },  
     smsCode:"1234",
-    phoneMsg:"",
+    mobileMsg:"",
     show: false,
     smsflag:false,
     disabled:false,
     currentTime:60,
     showCountDown:false,
     smsTitle:"发送验证码",
-    flag: false
-    // userNickName:""
+    flag: false,
+    auth:false
   },
   sendSms(){
     var that = this;
@@ -48,21 +52,30 @@ Page({
       url: '../logs/logs'
     })
   },
-  onLoad: function () {
-    
+  onLoad: function (options) {
+    this.setData({
+      auth:options.auth
+    })
+    var temp = wx.getStorageSync('userinfo')
+    console.log("-----++",temp)
+    if(temp.length!=0){
+      this.setData({
+        userinfo:temp
+      })
+    }
   },
   showPopup() {
     console.log("点击true")
     this.setData({ show: true });
   },
-  onChangeName(event) {
+  onChangeName() {
     // event.detail 为当前输入的值
     this.setData({flag:false})
   },
-  onChangePhone(event){
-    this.setData({phoneMsg:""})
+  onChangemobile(){
+    this.setData({mobileMsg:""})
   },
-  onChangeSms(event){
+  onChangeSms(){
     this.setData({smsflag:false})
   },
   onClose() {
@@ -76,11 +89,11 @@ Page({
       this.setData({flag:true})
       pd = false
     }
-    if (this.data.phone == ""){
-      this.setData({phoneMsg:"手机号不能为空"})
+    if (this.data.mobile == ""){
+      this.setData({mobileMsg:"手机号不能为空"})
       pd = false
-    }else if(this.data.phone.length!=11){
-      this.setData({phoneMsg:"手机号格式错误"})
+    }else if(this.data.mobile.length!=11){
+      this.setData({mobileMsg:"手机号格式错误"})
       pd = false
     }
     if (this.data.sms == ""){
@@ -90,7 +103,6 @@ Page({
     if(pd){
       this.submitInfo()
     }
-
   },
   submitInfo(){
     var urlConfig = (wx.getStorageSync('urlConfig'));
@@ -100,7 +112,7 @@ Page({
       data:{
         userid:wx.getStorageSync('userid'),
         username:this.data.username,
-        phone:this.data.phone,
+        mobile:this.data.mobile,
         smsCode:this.data.smsCode
       },
       method:"POST",

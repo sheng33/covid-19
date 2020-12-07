@@ -6,7 +6,9 @@ Page({
   data: {
     motto: 'Hello World',
     netStatus:true,
+    userInfo:[],
     menuList:[],
+    userAuth:true,
     "imgUrl":""
   },
   onLoad: function () {
@@ -22,8 +24,11 @@ Page({
         if(result.data.code == -1){
           that.popup = that.selectComponent("#popup");
           that.popup.showPopup();
+          that.setData({
+            userAuth:true,
+          })
         }
-        if(result.statusCode == 500){
+        if(result.data.code == 500){
           setTimeout(function(){
             wx.request({
               url: urlConfig.authorization,
@@ -40,7 +45,8 @@ Page({
             })
           },2000)
         }
-        console.log(result)
+        console.log("------------",result)
+        wx.setStorageSync("userinfo",result.data.data)
       },
       fail(res){
         console.log("授权失败")
@@ -65,15 +71,19 @@ Page({
         that.setData({
           menuList : result.data.data
         })
-        console.log(result.data.data)
       }
     })
   },
+
   //确认事件
   _success() {
     this.popup.hidePopup();
     wx.navigateTo({
-      url: '../userinfo/userinfo',
+      url: '../userinfo/userinfo?auth='+this.data.userAuth,
+      success: function(res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('userInfo', { data:this.data.userInfo })
+      }
     })
   }
 })
