@@ -12,6 +12,8 @@ Page({
       istemperature:0,
       istouch:0,
     },  
+    username:"",
+    mobile:"",
     smsCode:"1234",
     mobileMsg:"",
     show: false,
@@ -46,27 +48,23 @@ Page({
       }) 
     }
   },
-  //事件处理函数
-  bindViewTap: function() {
-    wx.navigateTo({
-      url: '../logs/logs'
-    })
-  },
   onLoad: function (options) {
     this.setData({
       auth:options.auth
     })
-    var temp = wx.getStorageSync('userinfo')
-    console.log("-----++",temp)
-    if(temp.length!=0){
-      this.setData({
-        userinfo:temp
-      })
-    }
+    var temp = wx.getStorageSync('userinfo') 
+    if(temp.length!=0){ 
+      this.setData({ 
+        userinfo:temp 
+      }) 
+    } 
   },
   showPopup() {
     console.log("点击true")
     this.setData({ show: true });
+  },
+  sendValue(that){
+    console.log(that)
   },
   onChangeName() {
     // event.detail 为当前输入的值

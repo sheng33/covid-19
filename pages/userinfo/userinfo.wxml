@@ -2,17 +2,18 @@
   <view wx:if="{{auth=='true'}}">
     <view class="title">{{title}}</view>
     <van-field
-      model:value="{{ userinfo.username }}"
+      model:value="{{ username }}"
       required
       clearable
       error="{{flag}}"
       label="真实姓名"
+      bind:blur="sendValue"
       placeholder="请输入姓名"
       bind:click-icon="onClickIcon"
       bind:change="onChangeName"
     />
     <van-field
-      model:value="{{ userinfo.mobile }}"
+      model:value="{{ mobile }}"
       label="手机号"
       required
       clearable
@@ -43,19 +44,19 @@
     </van-cell>
     <van-cell title="真实姓名" value="{{userinfo.username}}" />
     <van-cell title="手机号" value="{{userinfo.mobile}}" />
-    <van-cell title="区域正常">
+    <van-cell title="区域">
       <van-tag medium type="success" wx:if="{{userinfo.isarea==0}}">正常</van-tag>
-      <van-tag medium type="warning" wx:elif="{{userinfo.isarea==1}}">警告</van-tag>
+      <van-tag medium type="warning" wx:elif="{{userinfo.isarea==1}}">异常</van-tag>
       <van-tag medium type="danger" wx:elif="{{userinfo.isarea==2}}">危险</van-tag>
     </van-cell>
-    <van-cell title="体温正常">
+    <van-cell title="体温">
       <van-tag medium type="success" wx:if="{{userinfo.istemperature==0}}">正常</van-tag>
-      <van-tag medium type="warning" wx:elif="{{userinfo.istemperature==1}}">警告</van-tag>
+      <van-tag medium type="warning" wx:elif="{{userinfo.istemperature==1}}">异常</van-tag>
       <van-tag medium type="danger" wx:elif="{{userinfo.istemperature==2}}">危险</van-tag>
     </van-cell>
-    <van-cell title="接触正常">
+    <van-cell title="接触">
       <van-tag medium type="success" wx:if="{{userinfo.istouch==0}}">正常</van-tag>
-      <van-tag medium type="warning" wx:elif="{{userinfo.istouch==1}}">警告</van-tag>
+      <van-tag medium type="warning" wx:elif="{{userinfo.istouch==1}}">异常</van-tag>
       <van-tag medium type="danger" wx:elif="{{userinfo.istouch==2}}">危险</van-tag>
     </van-cell>
   </view>

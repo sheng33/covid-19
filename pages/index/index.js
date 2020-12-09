@@ -68,8 +68,13 @@ Page({
       url: urlConfig.getMenuList,
       method:'GET',
       success(result){
+        var list = result.data.data
+        // for (var i=0;i<list.length;i++){
+        //   list[i].menu_imgUrl = urlConfig.host+"static/img/"+list[i].menu_imgUrl
+        // }
+        // console.log("list++",list)
         that.setData({
-          menuList : result.data.data
+          menuList : list
         })
       }
     })
@@ -80,10 +85,6 @@ Page({
     this.popup.hidePopup();
     wx.navigateTo({
       url: '../userinfo/userinfo?auth='+this.data.userAuth,
-      success: function(res) {
-        // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('userInfo', { data:this.data.userInfo })
-      }
     })
   }
 })

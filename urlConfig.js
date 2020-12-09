@@ -5,6 +5,7 @@ var config={
   authorization:host+"client/authorization",
   getBanner:host+"clientsysConfig/getBanner",
   getMenuList:host+"clientsysConfig/getMenuList",
-  userBind:host+"client/userBind"
+  userBind:host+"client/userBind",
+  fillinformation:host+"client/fillinformation"
 }
 module.exports=config;
