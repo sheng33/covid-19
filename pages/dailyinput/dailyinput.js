@@ -11,7 +11,8 @@ Page({
   },
   onLoad:function(){
     var that = this;
-    var myAmapFun = new amapFile.AMapWX({key:'7aa0763b1e4301675eeba6daec7f23b4'});
+    var mapId = wx.getStorageSync('mapId')
+    var myAmapFun = new amapFile.AMapWX({key:wx.getStorageSync('mapId')});
     myAmapFun.getRegeo({
       success: function(data){
         that.setData({
@@ -22,6 +23,7 @@ Page({
       },
       fail: function(info){
         //失败回调
+        
         console.log(info)
       }
     })

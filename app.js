@@ -1,9 +1,11 @@
 //app.js
 var urlConfig = require('./urlConfig.js');
+var mapId = "7aa0763b1e4301675eeba6daec7f23b4"
 App({
   onLaunch: function () {
     // 展示本地存储能力
     wx.setStorageSync('urlConfig',urlConfig);
+    wx.setStorageSync('mapId',mapId)
     urlConfig = wx.getStorageSync('urlConfig')
     var logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())

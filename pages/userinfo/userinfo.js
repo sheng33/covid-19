@@ -2,6 +2,8 @@
 //获取应用实例
 const app = getApp()
 var interval = null
+var urlConfig = (wx.getStorageSync('urlConfig'));
+
 Page({
   data: {
     title:"信息绑定",
@@ -49,18 +51,25 @@ Page({
     }
   },
   onLoad: function (options) {
+    var that = this
     this.setData({
       auth:options.auth
     })
-    var temp = wx.getStorageSync('userinfo') 
-    if(temp.length!=0){ 
-      this.setData({ 
-        userinfo:temp 
-      }) 
-    } 
+    var temp = wx.getStorageSync('userid') 
+    wx.request({
+      url: urlConfig.authorization,
+      data:{
+        userid:temp
+      },
+      method:"POST",
+      success(res){
+        that.setData({
+          userinfo:res.data.data
+        })
+      }
+    })
   },
   showPopup() {
-    console.log("点击true")
     this.setData({ show: true });
   },
   sendValue(that){
@@ -103,7 +112,6 @@ Page({
     }
   },
   submitInfo(){
-    var urlConfig = (wx.getStorageSync('urlConfig'));
     var that = this
     wx.request({
       url: urlConfig.userBind,
