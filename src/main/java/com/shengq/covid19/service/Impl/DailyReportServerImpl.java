@@ -9,12 +9,14 @@ import com.shengq.covid19.mapper.DailyReportMapper;
 import com.shengq.covid19.service.DailyReportService;
 import com.shengq.covid19.vo.DailyReportVo;
 import com.sun.xml.internal.bind.v2.TODO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
-
+@Slf4j
 @Service
 public class DailyReportServerImpl implements DailyReportService {
     final DailyReportMapper dailyReportMapper;
@@ -34,6 +36,7 @@ public class DailyReportServerImpl implements DailyReportService {
     }
 
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public int addNewRecording(DailyReportVo info) {
         boolean istouch = info.isIstouch();
         float temperature = Float.parseFloat(info.getTemperature());
@@ -46,7 +49,7 @@ public class DailyReportServerImpl implements DailyReportService {
             isAbnormal = true;
         }
         // 异常温度分析
-        if (temperature>38.0){
+        if (temperature>38.0||temperature<35.5){
             clientUser.setIstemperature(1);
             isAbnormal = true;
         }
@@ -62,6 +65,7 @@ public class DailyReportServerImpl implements DailyReportService {
             // 存入异常人员表
             abnormalPersonMapper.insert(clientUser.getUserid(),clientUser.getMobile(),info.getAddress(),info.getAddress(),
                     0,info.getRemark());
+            log.info("记录一个异常人员信息:"+clientUser);
         }
         DailyReport dailyReport = new DailyReport(0,info.getUserid(),info.getAddress(),info.getTemperature(),
                 "",info.getRemark());
