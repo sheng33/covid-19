@@ -109,8 +109,6 @@ public class ClientMenuServiceImpl implements ClientMenuService {
         Integer auth = json.get("auth").asInt();
         String imgUrl = json.get("menu_imgUrl").asText();
         String imgName = json.get("menu_imgName").asText();
-        System.out.println("========="+status);
-        System.out.println("========="+auth);
         ConfigImg is_configImg = imgService.getImgByimgName(imgName);
         if (is_configImg!=null){
             return -2;

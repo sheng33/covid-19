@@ -11,12 +11,15 @@ spring:
       min-idle: 5
       max-idle: 30
       max-active: 50
+  mvc:
+    static-path-pattern: /static/**
 server:
   port: 8080
+  tomcat:
+    connection-timeout: -1
+
 pagehelper:
   auto-dialect: mysql
   params: count=countSql
   reasonable: true
   support-methods-arguments: true
-
-

@@ -32,8 +32,6 @@ public class ClientSysConfigTest {
                 "imgName:\""+imgName+"\"}";
         System.out.println("sendJson:"+sendJson);
 
-
-
         String url = "http://localhost:8080/clientsysConfig/addMenu";
         HttpRequest httpRequest = HttpRequest.post(url);
         httpRequest.header("cookie",cookies);

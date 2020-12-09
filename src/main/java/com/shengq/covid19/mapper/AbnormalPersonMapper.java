@@ -25,21 +25,22 @@ public interface AbnormalPersonMapper {
 
     /***
      * 更新记录状态
-     * @param userid
+     * @param id
      * @param status
      * @return
      */
     @Update("UPDATE abnormalperson SET status = #{status},remark = #{remark} WHERE id = #{id}")
-    int updateStatus(@Param("userid")String userid,@Param("status")String status,@Param("remark")String remark);
+    int updateStatus(@Param("id")String id,@Param("status")String status,@Param("remark")String remark);
 
 
     /***
      * 插入新的异常人员记录
-     * @param info
+     * @param userid
      */
-    @Insert("INSERT INTO abnormalperson(id,userid,mobile,adress,nearestaddress,status,remark)" +
-            "VALUES(null,#{info.userid},#{info.mobile},#{info.address},#{info.nearestaddress},#{info.status}")
-    void insert(@Param("info") AbnormalPerson info);
+    @Insert("INSERT INTO abnormalperson(userid,mobile,address,nearestaddress,status,remark)" +
+            "VALUES(#{userid},#{mobile},#{address},#{nearestaddress},#{status},#{remark})")
+    void insert(@Param("userid") String userid,@Param("mobile") String mobile,@Param("address") String address,
+                @Param("nearestaddress") String nearestaddress,@Param("status") int status,@Param("remark") String remark);
 
     /***
      * 返回所有异常人员信息

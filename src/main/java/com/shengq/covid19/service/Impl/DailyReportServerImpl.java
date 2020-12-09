@@ -60,9 +60,8 @@ public class DailyReportServerImpl implements DailyReportService {
             clientUserMapper.updateClientUserStatus(clientUser.getUserid(),clientUser.getIstouch(),
                     clientUser.getIsarea(),clientUser.getIstemperature());
             // 存入异常人员表
-            AbnormalPerson abnormalPerson = new AbnormalPerson(0,clientUser.getUserid(),clientUser.getMobile(),
-                    info.getAddress(),info.getAddress(),0,"","");
-            abnormalPersonMapper.insert(abnormalPerson);
+            abnormalPersonMapper.insert(clientUser.getUserid(),clientUser.getMobile(),info.getAddress(),info.getAddress(),
+                    0,info.getRemark());
         }
         DailyReport dailyReport = new DailyReport(0,info.getUserid(),info.getAddress(),info.getTemperature(),
                 "",info.getRemark());

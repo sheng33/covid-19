@@ -47,7 +47,6 @@ public class ClientUserController {
         if (clientUser.getUsername() == null || clientUser.getMobile() == null){
             return  ResultUtil.error(-1,"用户信息不完整");
         }else {
-
             return ResultUtil.success(clientUser);
         }
     }
@@ -58,7 +57,7 @@ public class ClientUserController {
     public Result<?> userBind(@RequestBody JsonNode jsonNode){
         String userid = jsonNode.get("userid").asText();
         String username = jsonNode.get("username").asText();
-        String iphone = jsonNode.get("phone").asText();
+        String iphone = jsonNode.get("mobile").asText();
         String smsCode = jsonNode.get("smsCode").asText();
         int sql_code = 0;
         if (smsCode.equals("1234")){
@@ -75,13 +74,17 @@ public class ClientUserController {
     @ApiOperation("每日信息填报")
     @PostMapping("/fillinformation")
     public Result<?> fillInformation(@RequestBody DailyReportVo dailyInfo){
-        dailyReportService.addNewRecording(dailyInfo);
+        System.out.println("每日填报数据："+dailyInfo);
+        int code = dailyReportService.addNewRecording(dailyInfo);
         // 存入数据库dailyReport 表
         // 进行温度，地点，异常人员接触分析
         // 存入异常人员信息表
+        if (code == 1){
+            return ResultUtil.success();
+        }else {
+            return ResultUtil.error(-1,"每日填报失败");
+        }
 
-
-        return ResultUtil.success();
     }
 
 
