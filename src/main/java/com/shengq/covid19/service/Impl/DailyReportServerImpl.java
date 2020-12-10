@@ -41,21 +41,25 @@ public class DailyReportServerImpl implements DailyReportService {
         float temperature = Float.parseFloat(info.getTemperature());
         String address = info.getAddress();
         ClientUser clientUser = clientUserMapper.findById(info.getUserid());
+        int status = 0;
         boolean isAbnormal = false;
         // 异常接触分析
         if (istouch){
             clientUser.setIstouch(1);
             isAbnormal = true;
+            status++;
         }
         // 异常温度分析
         if (temperature>38.0||temperature<35.5){
             clientUser.setIstemperature(1);
             isAbnormal = true;
+            status++;
         }
         // TODO 地区分析未完成
         if ("北京".equals(address)){
             clientUser.setIsarea(1);
             isAbnormal = true;
+            status++;
         }
         if (isAbnormal){
             // 更新用户异常信息
@@ -66,8 +70,12 @@ public class DailyReportServerImpl implements DailyReportService {
                     0,info.getRemark());
             log.info("记录一个异常人员信息:"+clientUser);
         }
-        DailyReport dailyReport = new DailyReport(0,info.getUserid(),info.getAddress(),info.getTemperature(),
-                "",info.getRemark());
+        DailyReport dailyReport = new DailyReport();
+        dailyReport.setUserid(info.getUserid());
+        dailyReport.setAddress(info.getAddress());
+        dailyReport.setTemperature(info.getTemperature());
+        dailyReport.setRemark(info.getRemark());
+        dailyReport.setStatus(status);
         return dailyReportMapper.insert(dailyReport);
     }
 

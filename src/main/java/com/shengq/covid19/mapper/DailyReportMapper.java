@@ -20,9 +20,9 @@ public interface DailyReportMapper {
      * @param info
      * @return
      */
-    @Insert("INSERT INTO dailyreport(id,userid,address,temperature,remark)" +
-            "VALUES(0,#{info.userid},#{info.address},#{info.temperature}," +
-            "#{info.remark})")
+    @Insert("INSERT INTO dailyreport(userid,address,temperature,remark,status)" +
+            "VALUES(#{info.userid},#{info.address},#{info.temperature}," +
+            "#{info.remark},#{info.status})")
     int insert(@Param("info") DailyReport info);
 
     /***

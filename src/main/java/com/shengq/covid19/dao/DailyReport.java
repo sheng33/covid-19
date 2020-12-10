@@ -17,6 +17,7 @@ public class DailyReport implements Serializable {
     private String userid;
     private String address;
     private String temperature;
-    private String createTime;
     private String remark;
+    private int status;
+    private String createTime;
 }

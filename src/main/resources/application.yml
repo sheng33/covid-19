@@ -21,7 +21,7 @@ server:
 pagehelper:
   auto-dialect: mysql
   params: count=countSql
-  reasonable: true
+  reasonable: false
   support-methods-arguments: true
 logging:
   config: classpath:logger-config.xml

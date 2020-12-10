@@ -1,10 +1,13 @@
 package com.shengq.covid19.controller;
 
-import cn.hutool.core.codec.Base64;
+import cn.hutool.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.shengq.covid19.config.Result;
-import com.shengq.covid19.dao.ClientUser;
-import com.shengq.covid19.dao.SystemUserLoginDetail;
+import com.shengq.covid19.dao.DailyReport;
 import com.shengq.covid19.dto.ClientUserDTO;
 import com.shengq.covid19.mapper.ClientUserMapper;
 import com.shengq.covid19.service.ClientUserService;
@@ -14,14 +17,12 @@ import com.shengq.covid19.utils.wx.WXCore;
 import com.shengq.covid19.vo.DailyReportVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.ResultSet;
-import java.util.Arrays;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/client")
@@ -84,7 +85,29 @@ public class ClientUserController {
         }else {
             return ResultUtil.error(-1,"每日填报失败");
         }
+    }
+    @ApiOperation("填报记录列表")
+    @GetMapping("/getDailyList")
+    public Result<?> getDailyList(@RequestParam(value = "page",defaultValue = "1")int page,
+                                  @RequestParam(value = "size",defaultValue = "10")int size,String userid) throws JsonProcessingException {
+        PageHelper.startPage(page,size);
+        List<DailyReport> list = dailyReportService.findInfoById(userid);
+        List<JsonNode> listData = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        list.forEach(obj ->{
+            String str = "{\"id\":\""+obj.getId()+"\",\"address\":\""+obj.getAddress()+"\",\"temperature\":\""+obj.getTemperature()+"\",\"reamrk\":\""+obj.getRemark()+"\",\"status\":\""+obj.getStatus()+"\",\"createtime\":\""+obj.getCreateTime()+"\"}";
+            JsonNode result = null;
+            try {
+                result = mapper.readTree(str.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            listData.add(result);
+        });
 
+
+        PageInfo<JsonNode> pageInfo = new PageInfo<>(listData);
+        return ResultUtil.success(pageInfo);
     }
 
 
