@@ -22,7 +22,6 @@ public class DailyReportServerImpl implements DailyReportService {
     final DailyReportMapper dailyReportMapper;
     final  ClientUserMapper clientUserMapper;
     final AbnormalPersonMapper abnormalPersonMapper;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
 
     public DailyReportServerImpl(DailyReportMapper dailyReportMapper, ClientUserMapper clientUserMapper, AbnormalPersonMapper abnormalPersonMapper) {
         this.dailyReportMapper = dailyReportMapper;

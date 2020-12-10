@@ -62,11 +62,11 @@ public interface SystemUserMapper {
      * @param password 密码
      * @return 状态码
      */
-    @Update("UPDATE sys_user SET nmae=#{nmae},username = #{username},password = #{password},update_time=${update_time}" +
+    @Update("UPDATE sys_user SET nmae=#{nmae},username = #{username},password = #{password}" +
             " WHERE id = #{id}")
     int updateSystemUserInfo(@Param("id")Integer userid,@Param("name") String name,
                              @Param("username") String username,
-                             @Param("password") String password,@Param("update_time") String updateTime);
+                             @Param("password") String password);
 
     /***
      * 删除管理员账户
@@ -74,9 +74,8 @@ public interface SystemUserMapper {
      * @param status 状态值 0 正常 -1 删除
      * @return
      */
-    @Update("UPDATE sys_user SET status = #{status},update_time=${update_time} WHERE id = #{id}")
-    int updateSystemUserStatus(@Param("id")Integer userid,@Param("status") int status,
-                               @Param("update_time") String updateTime);
+    @Update("UPDATE sys_user SET status = #{status} WHERE id = #{id}")
+    int updateSystemUserStatus(@Param("id")Integer userid,@Param("status") int status);
 
     /***
      * 修改管理员权限
@@ -84,7 +83,6 @@ public interface SystemUserMapper {
      * @param permission 权限
      * @return
      */
-    @Update("UPDATE sys_user SET permission = #{permission},update_time=${update_time} WHERE id = #{id}")
-    int updateSystemUserPermission(@Param("id")Integer userid,@Param("permission")int permission,
-                                   @Param("update_time") String updateTime);
+    @Update("UPDATE sys_user SET permission = #{permission} WHERE id = #{id}")
+    int updateSystemUserPermission(@Param("id")Integer userid,@Param("permission")int permission);
 }

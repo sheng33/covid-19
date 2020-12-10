@@ -9,6 +9,8 @@ import com.shengq.covid19.service.SystemUserService;
 import com.shengq.covid19.utils.MyPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +23,6 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Autowired
     MyPasswordEncoder myPasswordEncoder;
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss ");
     /***
      * 获取用户信息（用户id）
      * @param userid 用户id
@@ -88,13 +89,13 @@ public class SystemUserServiceImpl implements SystemUserService{
      * @return 状态码
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public int updateSystemUserInfo(Integer userid,String name, String username, String oldPassword,String newPassword) {
-        Calendar calendar= Calendar.getInstance();
         SystemUser systemUser = userMapper.findById(userid);
         boolean pd = myPasswordEncoder.matches(newPassword,oldPassword);
         System.out.println("test");
         if (pd){
-            return userMapper.updateSystemUserInfo(userid,name,username,newPassword,dateFormat.format(calendar.getTime()));
+            return userMapper.updateSystemUserInfo(userid,name,username,newPassword);
         }
         return -1;
     }
@@ -108,7 +109,6 @@ public class SystemUserServiceImpl implements SystemUserService{
      */
     @Override
     public int registerSystemUser(SystemUserDTO systemUserDTO) {
-        Calendar calendar= Calendar.getInstance();
         SystemUser systemUser = userMapper.findByName(systemUserDTO.getUsername());
         if (systemUser != null){
             return -1;
@@ -126,8 +126,7 @@ public class SystemUserServiceImpl implements SystemUserService{
      */
     @Override
     public int delSystemUser(Integer userid) {
-        Calendar calendar= Calendar.getInstance();
-        return userMapper.updateSystemUserStatus(userid,-1,dateFormat.format(calendar.getTime()));
+        return userMapper.updateSystemUserStatus(userid,-1);
     }
 
     /***
@@ -138,8 +137,7 @@ public class SystemUserServiceImpl implements SystemUserService{
     @Override
     public int updateUserPermission(Integer userid) {
         //TODO:2020.10.29 权限分配逻辑还未完成
-        Calendar calendar= Calendar.getInstance();
-        return userMapper.updateSystemUserPermission(userid,0,dateFormat.format(calendar.getTime()));
+        return userMapper.updateSystemUserPermission(userid,0);
     }
 
 

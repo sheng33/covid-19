@@ -7,6 +7,7 @@ import com.shengq.covid19.mapper.ClientUserMapper;
 import com.shengq.covid19.service.ClientUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,6 +83,7 @@ public class ClientUserServiceImpl implements ClientUserService {
      * @return 返回List<用户dao列表>
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public List<ClientUserDTO> findAllUser() {
         List<ClientUser> userList = userMapper.findAllUser();
         List<ClientUserDTO> userDTOList = new ArrayList<>();

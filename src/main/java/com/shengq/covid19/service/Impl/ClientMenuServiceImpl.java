@@ -8,6 +8,7 @@ import com.shengq.covid19.service.ClientMenuService;
 import com.shengq.covid19.service.ConfigImgService;
 import com.shengq.covid19.vo.ClientMenuVo;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,7 @@ public class ClientMenuServiceImpl implements ClientMenuService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public List<ClientMenuVo> getAllMenu() {
         List<ClientMenu> menuList = clientMenuMapper.getAllMenu();
         List<ClientMenuVo> menuVoList = new ArrayList<>();
@@ -46,6 +48,7 @@ public class ClientMenuServiceImpl implements ClientMenuService {
      * @param status
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public List<ClientMenuVo> getAllMenuByStatus(Integer status) {
         List<ClientMenu> menuList = clientMenuMapper.getAllMenuByStatus(status);
         List<ClientMenuVo> menuVoList = new ArrayList<>();
@@ -65,6 +68,7 @@ public class ClientMenuServiceImpl implements ClientMenuService {
      * @param auth
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public List<ClientMenuVo> getAllMenuByAuth(Integer auth) {
         List<ClientMenu> menuList = clientMenuMapper.getAllMenuByAuth(auth);
         List<ClientMenuVo> menuVoList = new ArrayList<>();
@@ -84,6 +88,7 @@ public class ClientMenuServiceImpl implements ClientMenuService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public List<ClientMenuVo> getAllMenuByStatus_Auth(Integer status, Integer auth) {
         List<ClientMenu> menuList = clientMenuMapper.getAllMenuByStatus_Auth(status,auth);
         List<ClientMenuVo> menuVoList = new ArrayList<>();
@@ -102,6 +107,7 @@ public class ClientMenuServiceImpl implements ClientMenuService {
      * @param json
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public int addMenu(JsonNode json) {
         String menuName = json.get("menuName").asText();
         String menuUrl = json.get("menuUrl").asText();
@@ -144,6 +150,7 @@ public class ClientMenuServiceImpl implements ClientMenuService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = {RuntimeException.class, Error.class})
     public ClientMenuVo getMenu(Integer id) {
         ClientMenu menu = clientMenuMapper.getMenu(id);
         ConfigImg configImg = configImgService.getImageById(menu.getMenu_imgId());
