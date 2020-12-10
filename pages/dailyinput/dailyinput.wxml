@@ -8,7 +8,7 @@
       autosize="true"
       label="当前地址"
       readonly
-    />
+      />
     <van-cell 
     title="当前体温"
       required>

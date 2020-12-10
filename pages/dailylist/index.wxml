@@ -1,0 +1,20 @@
+<view> 
+  <van-panel  class="panel" wx:for="{{list}}"  wx:for-item="item">
+    <van-row >
+      <van-col span="8"  class="name">{{username}}</van-col>
+      <van-col span="6">温度:<van-tag round type="primary">{{item.temperature}}</van-tag></van-col>
+      <van-col span="4" class="tagPannel">
+        <van-tag medium type="success" wx:if="{{item.status==0}}">健康</van-tag>
+        <van-tag medium type="warning" wx:elif="{{item.status==1}}">异常</van-tag>
+        <van-tag medium type="danger" wx:elif="{{item.status==2}}">危险</van-tag>
+      </van-col>
+      <van-col span="6" class="time">{{item.createtime}}</van-col>
+    </van-row>
+    <van-row>
+      <van-col class="content">{{item.address}}</van-col>
+    </van-row>
+  </van-panel>
+  <view class="refresh-block" wx:if="{{loading}}">
+    <van-loading size="24px" vertical color="#1989fa">加载中...</van-loading>
+  </view>
+</view>

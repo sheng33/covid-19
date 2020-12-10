@@ -1,0 +1,32 @@
+.panel{
+  background-color: #fff !important;
+  width: 100% !important;
+  height: 175rpx !important;
+  padding-top: 25rpx;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+page{
+  background-color:#F0F3F6 !important;
+}
+.tagPannel{
+  text-align: right;
+}
+van-tag{
+  padding-right: 20rpx;
+}
+.time{
+  font-size: 21rpx;
+  text-align: center;
+  color: #8f9090;
+}
+.name view{
+  padding-left: 10rpx;
+}
+.content view{
+  padding-left: 10rpx;
+}
+.refresh-block{
+  text-align: center;
+}

@@ -53,6 +53,17 @@ Page({
       method:"POST",
       success(res){
         console.log(res)
+        wx.showToast({
+          title: '填报成功',
+          icon: "success",
+          duration:2000,
+          mask:true,
+        })
+        setTimeout(function(){
+          wx.redirectTo({
+            url: '../index/index',
+          })
+        },1500)
       }
     })
   }

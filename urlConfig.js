@@ -6,6 +6,7 @@ var config={
   getBanner:host+"clientsysConfig/getBanner",
   getMenuList:host+"clientsysConfig/getMenuList",
   userBind:host+"client/userBind",
-  fillinformation:host+"client/fillinformation"
+  fillinformation:host+"client/fillinformation",
+  getDailyList:host+"client/getDailyList"
 }
 module.exports=config;

@@ -14,12 +14,15 @@
     "van-field": "@vant/weapp/field/index",
     "van-nav-bar":"@vant/weapp/nav-bar/index",
     "van-stepper": "@vant/weapp/stepper/index",
-    "van-switch": "@vant/weapp/switch/index"
+    "van-switch": "@vant/weapp/switch/index",
+    "van-loading": "@vant/weapp/loading/index",
+    "van-panel": "@vant/weapp/panel/index"
   },
   "pages":[
     "pages/index/index",
     "pages/dailyinput/dailyinput",
     "pages/userinfo/userinfo",
+    "pages/dailylist/index",
     "pages/logs/logs"
   ],
   "permission": {
@@ -28,11 +31,12 @@
     }
   },
   "window":{
-    "backgroundColor": "#F7F8FA",
+    "backgroundColor": "#F0F3F6",
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#F7F8FA",
     "navigationBarTitleText": "Covid19信息客户端",
-    "navigationBarTextStyle":"black"
+    "navigationBarTextStyle":"black",
+    "enablePullDownRefresh": true
   },
   "sitemapLocation": "sitemap.json"
 }
