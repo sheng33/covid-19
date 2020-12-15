@@ -12,14 +12,15 @@ import sun.security.provider.MD5;
 public class MyPasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence charSequence) {
-        String encodeStr= DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+//        String encodeStr= DigestUtils.md5DigestAsHex(charSequence.toString().getBytes());
+        String encodeStr= charSequence+"---";
+        System.out.println("endcode:"+encodeStr);
 //        System.out.println("MD5加密后的字符串为:encodeStr="+encodeStr);
         return encodeStr;
     }
 
     @Override
     public boolean matches(CharSequence charSequence, String s) {
-        System.out.println("1");
-        return encode(charSequence).equals(encode(s));
+        return encode(charSequence).equals(s);
     }
 }

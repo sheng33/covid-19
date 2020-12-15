@@ -48,7 +48,7 @@ public class ClientUserController {
         if (clientUser.getUsername() == null || clientUser.getMobile() == null){
             return  ResultUtil.error(-1,"用户信息不完整");
         }else {
-            return ResultUtil.success(clientUser);
+            return ResultUtil.success("授权成功",clientUser);
         }
     }
 
@@ -107,7 +107,7 @@ public class ClientUserController {
 
 
         PageInfo<JsonNode> pageInfo = new PageInfo<>(listData);
-        return ResultUtil.success(pageInfo);
+        return ResultUtil.success("查询成功",pageInfo);
     }
 
 

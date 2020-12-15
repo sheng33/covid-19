@@ -36,7 +36,7 @@ public class AbnormalPersonController {
         PageHelper.startPage(page,size);
         List<AbnormalPerson> abnormalPeopleList = abnormalPersonService.getAllAbnormalPeople();
         PageInfo<AbnormalPerson> pageInfo = new PageInfo<>(abnormalPeopleList);
-        return ResultUtil.success(pageInfo);
+        return ResultUtil.success("查询成功",pageInfo);
     }
 
     @ApiOperation("获取所有符合status条件的的异常人员信息")
@@ -49,7 +49,7 @@ public class AbnormalPersonController {
         PageHelper.startPage(page,size);
         List<AbnormalPerson> abnormalPeopleList = abnormalPersonService.getAllByStatus(status);
         PageInfo<AbnormalPerson> pageInfo = new PageInfo<>(abnormalPeopleList);
-        return ResultUtil.success(pageInfo);
+        return ResultUtil.success("查询成功",pageInfo);
     }
 
     @ApiOperation("处理异常人员记录")
@@ -77,7 +77,7 @@ public class AbnormalPersonController {
         AbnormalPersonVo abnormalVo = new AbnormalPersonVo(abnormalInfo.getId(),abnormalInfo.getUserid(),abnormalInfo.getMobile(),
                 abnormalInfo.getAddress(),clientUser.getUsername(),abnormalInfo.getNearestaddress(),abnormalInfo.getStatus(),abnormalInfo.getRemark(),
                 abnormalInfo.getCreatetime(),clientUser.getIstouch(),clientUser.getIsarea(),clientUser.getIstemperature());
-        return ResultUtil.success(abnormalVo);
+        return ResultUtil.success("查询成功",abnormalVo);
     }
 
 
@@ -85,7 +85,7 @@ public class AbnormalPersonController {
     @GetMapping("/search")
     public Result<?> getAbnormalPersonInfo(String mobile){
         AbnormalPerson abnormalPerson = abnormalPersonService.searchByMobile(mobile);
-        return ResultUtil.success(abnormalPerson);
+        return ResultUtil.success("查询成功",abnormalPerson);
     }
 
 

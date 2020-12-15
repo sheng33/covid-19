@@ -1,4 +1,6 @@
 spring:
+  #是否开启spring security基本的鉴权
+  security.basic.enabled: true
   datasource:
     driver-class-name:  com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://47.102.86.236:3306/COVID19?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
@@ -25,3 +27,12 @@ pagehelper:
   support-methods-arguments: true
 logging:
   config: classpath:logger-config.xml
+
+
+# JWT
+jwt:
+  header: jwt-token
+  secret: secret
+  #token有效期一天(秒)
+  expiration: 86400
+  token: Authorization

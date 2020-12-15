@@ -14,13 +14,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class SystemUser implements Serializable {
     private static final long serialVersionUID = 1041832535256082017L;
-    private Integer id;
-    private String name;
-    private String username;
-    private String password;
-    private String mobile;
-    private int status;
-    private int permission;
-    private String updateTime;
-    private String createTime;
+    public Integer id;
+    public String name;
+    public String username;
+    public String password;
+    public String mobile;
+    public int status;
+    public int permission;
+    public String updateTime;
+    public String createTime;
+
 }

@@ -87,7 +87,7 @@ public class DecodeWXUserController {
         }else {
             ClientUser clientUser = clientUserMapper.findByOpenId(openid);
             if (sessionKey.equals(clientUser.getSessionKey())){
-                return ResultUtil.success(clientUserDto);
+                return ResultUtil.success("查询成功",clientUserDto);
             }else {
                 clientUserService.updateClinetUserSession(openid,sessionKey);
                 return ResultUtil.success("更新用户Session成功",clientUserDto);

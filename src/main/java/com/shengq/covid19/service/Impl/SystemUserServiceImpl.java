@@ -18,10 +18,15 @@ import java.util.List;
 
 @Service
 public class SystemUserServiceImpl implements SystemUserService{
-    @Autowired
+    final
     SystemUserMapper userMapper;
-    @Autowired
+    final
     MyPasswordEncoder myPasswordEncoder;
+
+    public SystemUserServiceImpl(SystemUserMapper userMapper, MyPasswordEncoder myPasswordEncoder) {
+        this.userMapper = userMapper;
+        this.myPasswordEncoder = myPasswordEncoder;
+    }
 
     /***
      * 获取用户信息（用户id）

@@ -1,160 +1,171 @@
 package com.shengq.covid19.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.shengq.covid19.filter.JWTAuthorizationFilter;
+import com.shengq.covid19.filter.UserAuthenticationFilter;
+import com.shengq.covid19.handler.*;
 import com.shengq.covid19.service.Impl.SecurityUserDetailsServiceImpl;
-import com.shengq.covid19.utils.MyPasswordEncoder;
+import com.shengq.covid19.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author shengQ
  */
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     MyPasswordEncoder myPasswordEncoder;
     @Autowired
-    SecurityUserDetailsServiceImpl myCustomUserService;
+    SecurityUserDetailsServiceImpl userDetailsService;
+    /**
+     * 自定义登录成功处理器
+     */
     @Autowired
-    ObjectMapper objectMapper;
+    private UserLoginSuccessHandler userLoginSuccessHandler;
+    /**
+     * 自定义登录失败处理器
+     */
+    @Autowired
+    private UserLoginFailureHandler userLoginFailureHandler;
+    /**
+     * 自定义注销成功处理器
+     */
+    @Autowired
+    private UserLogoutSuccessHandler userLogoutSuccessHandler;
+    /**
+     * 自定义暂无权限处理器
+     */
+    @Autowired
+    private UserAuthAccessDeniedHandler userAuthAccessDeniedHandler;
+    /**
+     * 自定义未登录的处理器
+     */
+    @Autowired
+    private UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler;
+    /**
+     * 自定义登录逻辑验证器
+     */
+    @Autowired
+    private UserAuthenticationProvider userAuthenticationProvider;
+    /**
+     * 注入自定义PermissionEvaluator
+     */
+    @Bean
+    public DefaultWebSecurityExpressionHandler userSecurityExpressionHandler(){
+        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+        handler.setPermissionEvaluator(new UserPermissionEvaluator());
+        return handler;
+    }
 
 
-
+    /**
+     * anyRequest          |   匹配所有请求路径
+     * access              |   SpringEl表达式结果为true时可以访问
+     * anonymous           |   匿名可以访问
+     * denyAll             |   用户不能访问
+     * fullyAuthenticated  |   用户完全认证可以访问（非remember-me下自动登录）
+     * hasAnyAuthority     |   如果有参数，参数表示权限，则其中任何一个权限可以访问
+     * hasAnyRole          |   如果有参数，参数表示角色，则其中任何一个角色可以访问
+     * hasAuthority        |   如果有参数，参数表示权限，则其权限可以访问
+     * hasIpAddress        |   如果有参数，参数表示IP地址，如果用户IP和参数匹配，则可以访问
+     * hasRole             |   如果有参数，参数表示角色，则其角色可以访问
+     * permitAll           |   用户可以任意访问
+     * rememberMe          |   允许通过remember-me登录的用户访问
+     * authenticated       |   用户登录后可访问
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authenticationProvider(authenticationProvider())
+                .addFilterAt(customAuthenticationFilter(),UsernamePasswordAuthenticationFilter.class)
+                .addFilter(jwtAuthorizationFilter())
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
+                .and()
                 .authorizeRequests()
                     .antMatchers("/swagger-ui.html").permitAll()
                     .antMatchers("/webjars/**").permitAll()
                     .antMatchers("/v2/**").permitAll()
                     .antMatchers("/swagger-resources/**").permitAll()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/admin/login").permitAll()
                     .antMatchers("/api/decode").permitAll()
                     .antMatchers("/client/**").permitAll()
                     .antMatchers("/clientsysConfig/getBanner").permitAll()
                     .antMatchers("/clientsysConfig/getMenuList").permitAll()
                     .antMatchers("/static/**").permitAll()
+                    .antMatchers(HttpMethod.OPTIONS, "/**").anonymous()
                     .anyRequest().authenticated()//必须授权才能访问
-                    .and()
-                .httpBasic()
-                    //未登录时，进行json格式的提示，很喜欢这种写法，不用单独写一个又一个的类
-                    .authenticationEntryPoint((request,response,authException) -> {
-                        response.setContentType("application/json;charset=utf-8");
-                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        PrintWriter out = response.getWriter();
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("code",403);
-                        map.put("message","未登录");
-                        out.write(objectMapper.writeValueAsString(map));
-                        out.flush();
-                        out.close();
-                    })
-                    .and()
-                .formLogin() //使用自带的登录
-                    .loginProcessingUrl("/admin/login")
-                //登录失败，返回json
-                    .failureHandler((request,response,ex) -> {
-                        response.setContentType("application/json;charset=utf-8");
-                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                        PrintWriter out = response.getWriter();
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("code",401);
-                        if (ex instanceof UsernameNotFoundException || ex instanceof BadCredentialsException) {
-                            map.put("message","用户名或密码错误");
-                        } else if (ex instanceof DisabledException) {
-                            System.out.println(ex);
-                            map.put("message","账户被禁用");
-                        } else {
-                            map.put("message","登录失败!");
-                        }
-                        out.write(objectMapper.writeValueAsString(map));
-                        out.flush();
-                        out.close();
-                    })
-                    //登录成功，返回json
-                    .successHandler((request,response,authentication) -> {
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("code",200);
-                        map.put("message","登录成功");
-                        map.put("data",authentication);
-                        response.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = response.getWriter();
-                        out.write(objectMapper.writeValueAsString(map));
-                        out.flush();
-                        out.close();
-                    })
-                    .and()
-                .exceptionHandling()
-                //没有权限，返回json
-                    .accessDeniedHandler((request,response,ex) -> {
-                        response.setContentType("application/json;charset=utf-8");
-                        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                        PrintWriter out = response.getWriter();
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("code",403);
-                        map.put("message", "权限不足");
-                        out.write(objectMapper.writeValueAsString(map));
-                        out.flush();
-                        out.close();
-                    })
                 .and()
+                .formLogin()
+                .successHandler(userLoginSuccessHandler)
+                // 配置登录失败自定义处理类
+                .failureHandler(userLoginFailureHandler)
+                .and()
+                // 配置登出地址
                 .logout()
-                //退出成功，返回json
-                    .logoutSuccessHandler((request,response,authentication) -> {
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("code",200);
-                        map.put("message","退出成功");
-                        map.put("data",authentication);
-                        response.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = response.getWriter();
-                        out.write(objectMapper.writeValueAsString(map));
-                        out.flush();
-                        out.close();
-                    })
-                 .permitAll();
+                .logoutUrl("/login")
+                // 配置用户登出自定义处理类
+                .logoutSuccessHandler(userLogoutSuccessHandler)
+                .and()
+                // 配置没有权限自定义处理类
+                .exceptionHandling().accessDeniedHandler(userAuthAccessDeniedHandler)
+                .and();
         //开启跨域访问
         http.cors().disable();
         //开启模拟请求，比如API POST测试工具的测试，不开启时，API POST为报403错误
         http.csrf().disable();
     }
-
-    @Override
-    public void configure(WebSecurity web) {
-        //对于在header里面增加token等类似情况，放行所有OPTIONS请求。
-        web.ignoring().antMatchers(HttpMethod.OPTIONS, "/**");
-    }
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        //此方法在5.X过时需要提供一个PasswordEncorder的实例，否则后台汇报错误：java.lang.IllegalArgumentException: There is no PasswordEncoder mapped for the id "null"
-        //auth.inMemoryAuthentication().withUser("admin").password("123456").roles("ADMIN");
-        auth.userDetailsService(myCustomUserService).passwordEncoder(myPasswordEncoder);
+    /**
+     * 认证 AuthenticationProvider
+     */
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        return userAuthenticationProvider;
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        //对默认的UserDetailsService进行覆盖
-        authenticationProvider.setUserDetailsService(myCustomUserService);
-        authenticationProvider.setPasswordEncoder(myPasswordEncoder);
-        return authenticationProvider;
+    public JWTAuthorizationFilter jwtAuthorizationFilter() throws Exception {
+        return new JWTAuthorizationFilter(authenticationManager());
+    }
+    @Bean
+    UserAuthenticationFilter customAuthenticationFilter() throws Exception {
+        UserAuthenticationFilter filter = new UserAuthenticationFilter();
+        filter.setAuthenticationManager(super.authenticationManager());
+        filter.setAuthenticationSuccessHandler(userLoginSuccessHandler);
+        filter.setFilterProcessesUrl("/admin/login");
+        return filter;
+    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                // 注入身份的 Bean
+                .authenticationProvider(authenticationProvider())
+                .userDetailsService(userDetailsService)
+                // 默认登陆的加密，自定义登陆的时候无效
+                .passwordEncoder(myPasswordEncoder);
     }
 
 }

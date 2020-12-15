@@ -36,7 +36,7 @@ public class ClinetSysConfigController {
         PageHelper.startPage(page,size);
         List<ConfigImg> configImgList = imgService.getAllImgByType(ConfigImg.Type_Banner);
         PageInfo<ConfigImg> pageInfo = new PageInfo<>(configImgList);
-        return ResultUtil.success(pageInfo);
+        return ResultUtil.success("查询成功",pageInfo);
     }
     @ApiOperation("新增banner图")
     @PostMapping(value = "/addBannerImg")
@@ -54,7 +54,7 @@ public class ClinetSysConfigController {
     @GetMapping(value = "/getBanner")
     public Result<?> getBanner(int bannerId){
         ConfigImg clientConfigImg = imgService.getImageById(bannerId);
-        return ResultUtil.success(clientConfigImg);
+        return ResultUtil.success("获取成功",clientConfigImg);
     }
     @ApiOperation("删除banner图")
     @GetMapping(value = "/delBanner")
@@ -85,7 +85,7 @@ public class ClinetSysConfigController {
     @GetMapping(value = "/getMenuList")
     public Result<?> getMenuList(){
         List<ClientMenuVo> clientMenuVoList = menuService.getAllMenuByStatus_Auth(0,0);
-        return ResultUtil.success(clientMenuVoList);
+        return ResultUtil.success("获取",clientMenuVoList);
     }
 
 

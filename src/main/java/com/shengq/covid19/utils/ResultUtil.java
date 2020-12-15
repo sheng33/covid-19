@@ -6,35 +6,35 @@ import com.shengq.covid19.config.Result;
  * @author shengQ
  */
 public class ResultUtil {
-    public static Result<Object> success(Object object) {
-        Result<Object> result = new Result<>();
+    public static <T> Result<T> success(T msg,T object) {
+        Result<T> result = new Result<T>();
         result.setCode(200);
-        result.setMsg("请求成功");
+        result.setMsg(msg.toString());
         result.setData(object);
         return result;
     }
-    public static Result<String> successMsg(String msg) {
-        Result<String> result = new Result<String>();
+    public static <T> Result<T> successMsg(T msg) {
+        Result<T> result = new Result<T>();
         result.setCode(200);
-        result.setMsg(msg);
+        result.setMsg(msg.toString());
         result.setData(null);
         return result;
     }
-    public static Result<Object> success(String msg,Object object) {
-        Result<Object> result = new Result<>();
+    public static <T> Result<T> success(String msg, T object) {
+        Result<T> result = new Result<T>();
         result.setCode(200);
         result.setMsg(msg);
         result.setData(object);
         return result;
     }
-    public static Result<Object> success() {
-        return success(null);
+    public static <T> Result<T> success() {
+        return  success("请求成功",null);
     }
 
-    public static Result<String> error(Integer code, String msg) {
-        Result<String> result = new Result<String>();
+    public static <T> Result<T> error(Integer code, T msg) {
+        Result<T> result = new Result<T>();
         result.setCode(code);
-        result.setMsg(msg);
+        result.setMsg(msg.toString());
         return result;
     }
 
