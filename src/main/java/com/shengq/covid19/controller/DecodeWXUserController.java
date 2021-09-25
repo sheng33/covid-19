@@ -42,9 +42,9 @@ public class DecodeWXUserController {
             return  ResultUtil.error(0,"code 不能为空");
         }
         // 小程序唯一标识（在微信小程序管理后台获取）
-        String wxspAppid = "wxf33e9a68af8030a7";
+        String wxspAppid = "";
         // 小程序的 app secret（在微信小程序管理后台获取）
-        String wxspSecret = "dd8c45fbfd5ca86f4c9e19844f403227";
+        String wxspSecret = "";
         // 授权 （必填）
         String grant_type = "authorization_code";
         // 1. 向微信服务器  使用登录凭证  code 获取 session_key 和 openid
@@ -52,6 +52,7 @@ public class DecodeWXUserController {
         String params = "appid="+wxspAppid+"&secret="+wxspSecret+"&js_code="+code+"&grant_type="+grant_type;
         //发送请求
         String url = "https://api.weixin.qq.com/sns/jscode2session?"+params;
+        System.out.println(url);
         String str = HttpRequest.get(url).contentType(HttpRequest.CONTENT_TYPE_JSON).acceptJson().body();
         // 解析相应内容（转换成json对象）
         ObjectMapper mapper = new ObjectMapper();
